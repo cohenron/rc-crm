@@ -1,0 +1,1714 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="RC CRM">
+<title>RC Remodeling — CRM</title>
+<link rel="manifest" href="data:application/json,{%22name%22:%22RC+Remodeling+CRM%22,%22short_name%22:%22RC+CRM%22,%22start_url%22:%22.%22,%22display%22:%22standalone%22,%22background_color%22:%22%23181818%22,%22theme_color%22:%22%23CC2200%22}">
+<meta name="theme-color" content="#CC2200">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --red:#CC2200;--rdk:#A01A00;--rlt:#FEF0EE;--rmd:#FF6644;
+  --org:#E8521A;--olt:#FFF3EE;
+  --grn:#1A6B2D;--glt:#E8F5EC;--gmd:#22AA44;
+  --yel:#B8860B;--ylt:#FFFAEE;
+  --bg:#F0EFED;--sf:#FFFFFF;--sf2:#F8F7F5;--sf3:#F2F1EF;
+  --bd:#E0DED8;--bd2:#CCC9C2;
+  --ink:#181818;--ink2:#3A3A3A;--ink3:#666;--mut:#999;--lit:#BBBBBB;
+  --r:10px;--r2:6px;
+  --sh:0 1px 4px rgba(0,0,0,.06),0 4px 16px rgba(0,0,0,.04);
+  --sh2:0 2px 8px rgba(0,0,0,.10),0 8px 24px rgba(0,0,0,.06);
+}
+/* DARK MODE */
+body.dark{
+  --bg:#111113;--sf:#1C1C1F;--sf2:#242428;--sf3:#2A2A2F;
+  --bd:#333338;--bd2:#444450;
+  --ink:#F2F2F2;--ink2:#CCCCCC;--ink3:#AAAAAA;--mut:#777;--lit:#555;
+  --sh:0 1px 4px rgba(0,0,0,.3),0 4px 16px rgba(0,0,0,.25);
+  --sh2:0 2px 8px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.3);
+  --rlt:#2A0A00;--olt:#2A1400;--glt:#0A1F0F;--ylt:#1A1500;
+}
+body.dark .topbar{background:#0A0A0C;border-bottom:1px solid #222}
+body.dark .gate{background:#0A0A0C}
+body.dark .gbox{background:#1C1C1F;color:#F2F2F2}
+body.dark .ginput{background:#242428;border-color:#444;color:#F2F2F2}
+body.dark .fc{background:#242428;border-color:#444;color:#F2F2F2}
+body.dark .fc:focus{border-color:var(--red)}
+body.dark select.fc option{background:#242428}
+body.dark .mob{background:#1C1C1F}
+body.dark .moh,.mob .mft{background:#1C1C1F}
+body.dark .bs{background:#2A2A2F;border-color:#444;color:#ddd}
+body.dark .dethd{background:#0A0A0C}
+body.dark .pmcard{border-color:#333}
+body.dark .llcard{background:#1C1C1F;border-color:#333}
+body.dark .card{background:#1C1C1F;border-color:#333}
+body.dark .sc{background:#1C1C1F;border-color:#333}
+body.dark .ni{background:#1C1C1F}
+body.dark .ni.on{background:#2A0A00}
+body.dark .fab{box-shadow:0 4px 16px rgba(204,34,0,.6)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-tap-highlight-color:transparent;scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--ink);font-size:14px;line-height:1.5;min-height:100vh;overflow-x:hidden}
+button{font-family:inherit;cursor:pointer;border:none;background:none}
+input,select,textarea{font-family:inherit;font-size:14px;color:var(--ink)}
+a{color:inherit;text-decoration:none}
+img{max-width:100%}
+
+/* ── GATE ──────────────────────────────────────────── */
+#gate{position:fixed;inset:0;background:linear-gradient(135deg,#0D0D0D 0%,#1A0A00 100%);display:flex;align-items:center;justify-content:center;z-index:999;padding:1.5rem}
+#gate.h{display:none}
+.gbox{background:#fff;border-radius:20px;padding:2.5rem;width:100%;max-width:420px;box-shadow:0 24px 80px rgba(0,0,0,.4)}
+.glogo{display:flex;align-items:center;gap:.85rem;margin-bottom:2rem}
+.gicon{width:52px;height:52px;background:var(–red);border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 4px 12px rgba(204,34,0,.35)}
+.gname{font-size:1rem;font-weight:700;color:var(–ink);line-height:1.2}
+.gsub2{font-size:.65rem;color:var(–mut);text-transform:uppercase;letter-spacing:.1em;margin-top:.1rem}
+.gtitle{font-size:1.4rem;font-weight:700;margin-bottom:.4rem;color:var(–ink)}
+.gdesc{font-size:.84rem;color:var(–mut);margin-bottom:1.5rem;line-height:1.65}
+.ginput{width:100%;border:1.5px solid var(–bd);border-radius:var(–r);padding:.85rem 1rem;font-size:.9rem;outline:none;transition:border-color .2s,box-shadow .2s;background:#fff}
+.ginput:focus{border-color:var(–red);box-shadow:0 0 0 3px rgba(204,34,0,.08)}
+.gbtn{width:100%;margin-top:.85rem;background:var(–red);color:#fff;padding:.95rem;border-radius:var(–r);font-weight:700;font-size:.92rem;transition:all .15s;letter-spacing:.02em}
+.gbtn:hover{background:var(–rdk);transform:translateY(-1px);box-shadow:0 4px 12px rgba(204,34,0,.3)}
+.gnote{font-size:.69rem;color:var(–lit);margin-top:.7rem;text-align:center}
+
+/* ── APP SHELL ─────────────────────────────────────── */
+#app{display:none;flex-direction:column;min-height:100vh}
+#app.v{display:flex}
+
+/* ── TOPBAR ────────────────────────────────────────── */
+.topbar{background:#181818;height:58px;padding:0 1rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:60;border-bottom:1px solid rgba(255,255,255,.06)}
+.tbrand{display:flex;align-items:center;gap:.7rem}
+.ticon{width:34px;height:34px;background:var(–red);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.tname{font-size:.84rem;font-weight:700;color:#fff;letter-spacing:.01em}
+.ttag{font-size:.59rem;color:#666;text-transform:uppercase;letter-spacing:.09em;margin-top:.05rem}
+.tacts{display:flex;gap:.2rem}
+.ia{width:38px;height:38px;border-radius:9px;display:flex;align-items:center;justify-content:center;color:#777;font-size:1rem;transition:all .15s}
+.ia:hover,.ia.on{background:rgba(255,255,255,.1);color:#fff}
+
+/* ── SEARCH ────────────────────────────────────────── */
+#sbar{display:none;background:var(–sf);border-bottom:1px solid var(–bd);padding:.65rem 1rem}
+#sovl{display:none;position:fixed;top:110px;left:0;right:0;bottom:0;background:var(–bg);z-index:45;padding:1rem;overflow-y:auto}
+
+/* ── NAV ───────────────────────────────────────────── */
+.nav{background:var(–sf);border-top:1px solid var(–bd);display:flex;position:fixed;bottom:0;left:0;right:0;z-index:55;box-shadow:0 -2px 16px rgba(0,0,0,.08)}
+.ni{flex:1;padding:.65rem .5rem .55rem;font-size:.65rem;font-weight:500;color:var(–mut);border-top:2.5px solid transparent;white-space:nowrap;transition:all .15s;display:flex;flex-direction:column;align-items:center;gap:.2rem;position:relative;min-width:0}
+.ni .ni-icon{font-size:1.3rem;line-height:1;display:block}
+.ni .ni-lbl{font-size:.58rem;font-weight:500;letter-spacing:.01em}
+.ni.on{color:var(–red);border-top-color:var(–red);font-weight:600;background:var(–rlt)}
+.ni:hover:not(.on){color:var(–ink)}
+.nbdg{position:absolute;top:.3rem;right:calc(50% - 18px);background:var(–red);color:#fff;border-radius:10px;font-size:.52rem;font-weight:700;padding:.06rem .28rem;min-width:14px;text-align:center;line-height:1.4}
+
+/* ── CONTENT ───────────────────────────────────────── */
+.ct{flex:1;padding:1.1rem;max-width:980px;margin:0 auto;width:100%;padding-bottom:80px}
+.tab{display:none;opacity:0;transform:translateY(6px);transition:opacity .18s ease,transform .18s ease}
+.tab.on{display:block;opacity:1;transform:translateY(0)}
+@media(max-width:500px){.ct{padding:.85rem .7rem}}
+
+/* ── STAT CARDS ────────────────────────────────────── */
+.srow{display:grid;grid-template-columns:repeat(2,1fr);gap:.65rem;margin-bottom:1.1rem}@media(min-width:480px){.srow{grid-template-columns:repeat(4,1fr)}}@media(min-width:700px){.srow{grid-template-columns:repeat(5,1fr)}}
+@media(max-width:600px){.srow{grid-template-columns:repeat(2,1fr)}}
+.sc{background:var(–sf);border:1px solid var(–bd);border-radius:var(–r);padding:.9rem 1rem;position:relative;overflow:hidden;transition:transform .15s,box-shadow .15s;cursor:default}
+.sc.click{cursor:pointer}.sc.click:hover{transform:translateY(-2px);box-shadow:var(–sh2)}
+.sc::after{content:’’;position:absolute;top:0;left:0;width:3.5px;height:100%;background:var(–red)}
+.sc.green::after{background:var(–grn)}
+.sc.orange::after{background:var(–org)}
+.sc.blue::after{background:#1A4A8B}
+.sv{font-size:1.55rem;font-weight:700;line-height:1.1;margin-bottom:.2rem;letter-spacing:-.01em}
+.sl{font-size:.64rem;color:var(–mut);text-transform:uppercase;letter-spacing:.07em;font-weight:500}
+.ss{font-size:.71rem;color:var(–red);font-weight:500;margin-top:.15rem}
+.ss.g{color:var(–grn)}.ss.o{color:var(–org)}
+
+/* ── CARD ──────────────────────────────────────────── */
+.card{background:var(–sf);border-radius:var(–r);box-shadow:var(–sh);border:1px solid var(–bd);margin-bottom:.9rem;overflow:hidden}
+.ch{padding:.9rem 1rem;border-bottom:1px solid var(–bd);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.5rem;background:var(–sf)}
+.ct3{font-size:.71rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(–mut)}
+.cb{padding:1rem}
+
+/* ── PIPELINE ──────────────────────────────────────── */
+.pw{overflow-x:auto;padding-bottom:.75rem;scrollbar-width:thin}
+.pw::-webkit-scrollbar{height:4px}
+.pw::-webkit-scrollbar-thumb{background:var(–bd2);border-radius:4px}
+.pb{display:flex;gap:.75rem;min-width:max-content;padding:.25rem .1rem 1rem}
+.pc{width:210px;flex-shrink:0}
+.ph{padding:.6rem .75rem;border-radius:var(–r2) var(–r2) 0 0;font-size:.63rem;font-weight:700;text-transform:uppercase;letter-spacing:.09em;display:flex;justify-content:space-between;align-items:center}
+.ph .cn{background:rgba(255,255,255,.22);border-radius:20px;padding:.1rem .4rem;font-size:.59rem;font-weight:700}
+.pcs{background:var(–sf2);border:1px solid var(–bd);border-top:none;border-radius:0 0 var(–r2) var(–r2);min-height:90px;padding:.4rem;display:flex;flex-direction:column;gap:.35rem}
+.pcd{background:var(–sf);border:1px solid var(–bd);border-radius:6px;padding:.6rem .7rem;cursor:pointer;transition:box-shadow .15s,transform .1s;position:relative}
+.pcd:hover{box-shadow:0 2px 10px rgba(0,0,0,.1);transform:translateY(-1px)}
+.pn{font-size:.8rem;font-weight:600;margin-bottom:.12rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pa{font-size:.68rem;color:var(–mut);margin-bottom:.3rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pf{display:flex;justify-content:space-between;align-items:center}
+.pv{font-size:.7rem;font-weight:700;color:var(–red)}
+.purg{width:7px;height:7px;border-radius:50%;position:absolute;top:.45rem;right:.45rem;border:1.5px solid #fff}
+/* Stage header colors */
+.s1{background:#1C1C1C;color:#fff}.s2{background:#0F3460;color:#fff}.s3{background:#1A4A2E;color:#fff}
+.s4{background:#4A3000;color:#fff}.s5{background:#3D1054;color:#fff}.s6{background:#004D1A;color:#fff}
+.s7{background:var(–red);color:#fff}.s8{background:#003580;color:#fff}
+.s9{background:#555;color:#fff}.s10{background:#2A2A2A;color:#fff}
+
+/* ── FORMS ─────────────────────────────────────────── */
+.fg{display:flex;flex-direction:column;gap:.32rem;margin-bottom:.7rem}
+.fr{display:grid;grid-template-columns:1fr 1fr;gap:.7rem}
+.fr3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.7rem}
+@media(max-width:500px){.fr,.fr3{grid-template-columns:1fr}}
+.ff{grid-column:1/-1}
+label{font-size:.67rem;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(–mut)}
+.fc{border:1.5px solid var(–bd);border-radius:var(–r2);padding:.65rem .9rem;font-size:.87rem;outline:none;transition:border-color .2s,box-shadow .2s;background:var(–sf);width:100%}
+.fc:focus{border-color:var(–red);box-shadow:0 0 0 3px rgba(204,34,0,.07)}
+select.fc{cursor:pointer}
+textarea.fc{resize:vertical;min-height:72px}
+.fcsm{padding:.42rem .65rem;font-size:.8rem}
+
+/* ── BUTTONS ───────────────────────────────────────── */
+.btn{display:inline-flex;align-items:center;gap:.35rem;padding:.65rem 1.05rem;border-radius:var(–r2);font-size:.8rem;font-weight:600;letter-spacing:.01em;transition:all .15s;cursor:pointer;white-space:nowrap;border:none;line-height:1}
+.bp{background:var(–red);color:#fff}.bp:hover{background:var(–rdk);box-shadow:0 2px 8px rgba(204,34,0,.25)}
+.bs{background:var(–sf);color:var(–ink);border:1.5px solid var(–bd)}.bs:hover{border-color:var(–ink2)}
+.bo{background:var(–org);color:#fff}.bo:hover{background:#c44415}
+.bdk{background:#181818;color:#fff}.bdk:hover{background:#2A2A2A}
+.bg{background:var(–grn);color:#fff}.bg:hover{background:#145220}
+.bdr{background:var(–rlt);color:var(–red);border:1.5px solid #f5c0b0}.bdr:hover{background:#fdd}
+.bbl{background:#EEF2FF;color:#1A4A8B;border:1.5px solid #C7D2FE}.bbl:hover{background:#E0E8FF}
+.bsm{padding:.4rem .7rem;font-size:.73rem}
+.bxs{padding:.3rem .6rem;font-size:.68rem}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+.btngrp{display:flex;gap:.5rem;flex-wrap:wrap}
+
+/* ── MODAL ─────────────────────────────────────────── */
+.mo{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:100;display:flex;align-items:flex-end;justify-content:center;animation:fi .15s}
+@media(min-width:600px){.mo{align-items:center;padding:1rem}}
+.mob{background:var(–sf);border-radius:18px 18px 0 0;width:100%;max-width:700px;max-height:94vh;overflow-y:auto;animation:su .22s ease;display:flex;flex-direction:column}
+@media(min-width:600px){.mob{border-radius:14px;max-height:90vh}}
+.moh{padding:1.1rem 1.1rem .85rem;border-bottom:1px solid var(–bd);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:var(–sf);z-index:1;flex-shrink:0}
+.mot{font-size:1rem;font-weight:700}
+.mox{width:30px;height:30px;border-radius:50%;background:var(–bg);display:flex;align-items:center;justify-content:center;font-size:1.1rem;color:var(–mut);transition:background .15s}
+.mox:hover{background:var(–bd)}
+.mbd{padding:1.1rem;flex:1;overflow-y:auto}
+.mft{padding:.9rem 1.1rem;border-top:1px solid var(–bd);display:flex;gap:.6rem;justify-content:flex-end;background:var(–sf);position:sticky;bottom:0;flex-shrink:0}
+@keyframes fi{from{opacity:0}to{opacity:1}}
+@keyframes su{from{transform:translateY(28px);opacity:0}to{transform:translateY(0);opacity:1}}
+
+/* ── ROWS ──────────────────────────────────────────── */
+.row{display:flex;align-items:center;gap:.65rem;padding:.75rem 0;border-bottom:1px solid var(–bd)}
+.row:last-child{border-bottom:none}
+.rd{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+.ri{flex:1;min-width:0}
+.rl{font-size:.83rem;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rsb{font-size:.69rem;color:var(–mut);margin-top:.1rem}
+.rr{flex-shrink:0;display:flex;align-items:center;gap:.4rem}
+.ram{font-size:.88rem;font-weight:700}
+
+/* ── BADGES ────────────────────────────────────────── */
+.bdg{display:inline-flex;align-items:center;gap:.25rem;padding:.2rem .55rem;border-radius:20px;font-size:.62rem;font-weight:600;letter-spacing:.04em;text-transform:uppercase;white-space:nowrap}
+.bdg-red{background:var(–rlt);color:var(–red)}.bdg-green{background:var(–glt);color:var(–grn)}
+.bdg-orange{background:var(–olt);color:var(–org)}.bdg-gray{background:var(–sf2);color:var(–mut)}
+.bdg-blue{background:#EEF2FF;color:#1A4A8B}.bdg-yellow{background:var(–ylt);color:var(–yel)}
+.dp{background:var(–grn)}.ddu{background:var(–org)}.dlt{background:var(–red)}.dn{background:var(–lit)}.dpnd{background:#AAA}
+
+/* ── PAYMENT MILESTONE CARD ────────────────────────── */
+.pmcard{border:1px solid var(–bd);border-radius:var(–r);margin-bottom:.55rem;overflow:hidden;transition:box-shadow .15s}
+.pmcard:hover{box-shadow:var(–sh2)}
+.pmcard-top{padding:.75rem 1rem;display:flex;align-items:center;gap:.75rem}
+.pmcard-status{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.pmcard-info{flex:1;min-width:0}
+.pmcard-label{font-size:.84rem;font-weight:600;color:var(–ink);margin-bottom:.1rem}
+.pmcard-meta{font-size:.7rem;color:var(–mut)}
+.pmcard-right{display:flex;align-items:center;gap:.5rem;flex-shrink:0}
+.pmcard-amount{font-size:.95rem;font-weight:700}
+.pmcard-actions{border-top:1px solid var(–bd);padding:.55rem 1rem;background:var(–sf2);display:flex;gap:.4rem;flex-wrap:wrap;align-items:center}
+.pmcard.paid{border-left:3.5px solid var(–grn)}
+.pmcard.due{border-left:3.5px solid var(–org)}
+.pmcard.overdue{border-left:3.5px solid var(–red)}
+.pmcard.pending{border-left:3.5px solid var(–lit)}
+
+/* ── PAYMENT TIMELINE ──────────────────────────────── */
+.pmt-wrap{padding:1rem}
+.pmt-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;flex-wrap:wrap;gap:.5rem}
+.pmt-totals{display:grid;grid-template-columns:repeat(3,1fr);gap:.5rem;margin-bottom:1rem}
+.pmt-total{background:var(–sf2);border:1px solid var(–bd);border-radius:var(–r2);padding:.65rem .75rem;text-align:center}
+.pmt-total-val{font-size:1.1rem;font-weight:700;margin-bottom:.15rem}
+.pmt-total-lbl{font-size:.62rem;text-transform:uppercase;letter-spacing:.06em;color:var(–mut);font-weight:500}
+/* Progress bar */
+.prog-wrap{background:var(–sf3);border-radius:6px;height:8px;overflow:hidden;margin-bottom:1rem;position:relative}
+.prog-fill{height:100%;border-radius:6px;background:linear-gradient(90deg,var(–grn),#22BB44);transition:width .5s ease}
+.prog-label{display:flex;justify-content:space-between;font-size:.7rem;color:var(–mut);margin-bottom:.35rem;font-weight:500}
+
+/* ── INFO GRID ─────────────────────────────────────── */
+.ig{display:grid;grid-template-columns:1fr 1fr;gap:.55rem;margin-bottom:.85rem}
+@media(max-width:480px){.ig{grid-template-columns:1fr}}
+.ii{background:var(–sf2);border:1px solid var(–bd);border-radius:var(–r2);padding:.65rem .8rem}
+.il{font-size:.62rem;text-transform:uppercase;letter-spacing:.07em;color:var(–mut);margin-bottom:.2rem;font-weight:600}
+.iv{font-size:.86rem;font-weight:500}
+
+/* ── SECTION LABEL ─────────────────────────────────── */
+.slbl{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(–mut);margin:1.1rem 0 .65rem;display:flex;align-items:center;justify-content:space-between}
+
+/* ── DETAIL HEADER ─────────────────────────────────── */
+.dethd{background:#181818;border-radius:var(–r);padding:1.1rem 1.15rem;margin-bottom:.9rem;position:relative;overflow:hidden}
+.dethd::before{content:’’;position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(–red),var(–org))}
+.detname{font-size:1.18rem;font-weight:700;color:#fff;margin-bottom:.2rem}
+.detaddr{font-size:.78rem;color:#888;margin-bottom:.7rem}
+.detbdgs{display:flex;flex-wrap:wrap;gap:.35rem;margin-bottom:.8rem}
+.detb{background:rgba(255,255,255,.1);color:#ccc;padding:.22rem .55rem;border-radius:20px;font-size:.65rem;font-weight:500;white-space:nowrap}
+.detb.r{background:rgba(204,34,0,.28);color:#ff9977}
+.detb.g{background:rgba(26,107,45,.4);color:#88ffaa}
+.detacts{display:flex;flex-wrap:wrap;gap:.4rem}
+.detbtn{background:rgba(255,255,255,.1);color:#ccc;padding:.42rem .8rem;border-radius:6px;font-size:.74rem;font-weight:500;transition:background .15s;white-space:nowrap}
+.detbtn:hover{background:rgba(255,255,255,.2);color:#fff}
+.detbtn.r{background:rgba(204,34,0,.3);color:#ffaa88}
+
+/* ── EXPENSE ROWS ──────────────────────────────────── */
+.elabor{border-left:3px solid #1A4A8B}
+.ematerial{border-left:3px solid var(–org)}
+.esub{border-left:3px solid var(–grn)}
+.epermit{border-left:3px solid #7A2A8B}
+.eequip{border-left:3px solid #4A4A00}
+.eother{border-left:3px solid var(–mut)}
+
+/* ── ACTIVITY LOG ──────────────────────────────────── */
+.ait{display:flex;gap:.7rem;padding:.6rem 0;border-bottom:1px solid var(–bd)}
+.ait:last-child{border-bottom:none}
+.aitdot{width:7px;height:7px;border-radius:50%;background:var(–bd2);margin-top:.45rem;flex-shrink:0}
+.aitmsg{font-size:.81rem;color:var(–ink2);flex:1;line-height:1.5}
+.aittm{font-size:.67rem;color:var(–lit);flex-shrink:0;white-space:nowrap}
+
+/* ── AI OUTPUT ─────────────────────────────────────── */
+.ao{background:var(–sf2);border:1.5px solid var(–bd);border-radius:var(–r2);padding:1.1rem;font-size:.8rem;line-height:1.8;white-space:pre-wrap;word-wrap:break-word;max-height:360px;overflow-y:auto;font-family:‘DM Mono’,monospace;color:var(–ink2)}
+.ald{display:flex;align-items:center;gap:.65rem;padding:2rem;justify-content:center;color:var(–mut);font-size:.84rem}
+.sp{width:18px;height:18px;border:2.5px solid var(–bd);border-top-color:var(–red);border-radius:50%;animation:sp2 .7s linear infinite;flex-shrink:0}
+@keyframes sp2{to{transform:rotate(360deg)}}
+
+/* ── STRIPE CARD ───────────────────────────────────── */
+.stripe-card{background:linear-gradient(135deg,#0A2540 0%,#1A3A6A 100%);border-radius:var(–r);padding:1rem 1.1rem;margin:.75rem 0;color:#fff}
+.stripe-card-title{font-size:.72rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:#88AAFF;margin-bottom:.4rem}
+.stripe-card-url{font-size:.76rem;font-family:‘DM Mono’,monospace;background:rgba(255,255,255,.12);padding:.4rem .65rem;border-radius:5px;word-break:break-all;margin-bottom:.65rem;color:#ddd}
+.stripe-card-btns{display:flex;gap:.5rem;flex-wrap:wrap}
+.stripe-card-btn{background:rgba(255,255,255,.14);color:#ddd;padding:.42rem .8rem;border-radius:5px;font-size:.76rem;font-weight:500;transition:background .15s;cursor:pointer}
+.stripe-card-btn:hover{background:rgba(255,255,255,.24);color:#fff}
+.stripe-notice{background:var(–sf2);border:1px solid var(–bd);border-left:3px solid #635BFF;border-radius:var(–r2);padding:.8rem 1rem;font-size:.81rem;color:var(–ink2);margin-bottom:.9rem;line-height:1.6}
+
+/* ── EMPTY ─────────────────────────────────────────── */
+.empty{text-align:center;padding:2.5rem 1rem;color:var(–mut)}
+.empty-ico{font-size:2.2rem;margin-bottom:.65rem;opacity:.38}
+.empty-txt{font-size:.85rem;line-height:1.5}
+
+/* ── TOAST ─────────────────────────────────────────── */
+/* FAB */
+.fab{position:fixed;bottom:76px;right:1.1rem;width:52px;height:52px;background:var(–red);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.6rem;color:#fff;z-index:54;box-shadow:0 4px 16px rgba(204,34,0,.45);transition:transform .15s,box-shadow .15s;line-height:1}
+.fab:hover,.fab:active{transform:scale(1.08);box-shadow:0 6px 20px rgba(204,34,0,.55)}
+/* LEAD TEMPERATURE */
+.temp-hot{background:#FFF0EE;color:#CC2200;border:1.5px solid #f5c0b0}
+.temp-warm{background:#FFF8EE;color:#B8600B;border:1.5px solid #f5d8a0}
+.temp-cold{background:#EEF4FF;color:#1A4A8B;border:1.5px solid #C7D2FE}
+.temp-icon{font-size:.9rem}
+#toast{position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%) translateY(90px);background:#181818;color:#fff;padding:.7rem 1.3rem;border-radius:30px;font-size:.81rem;font-weight:500;z-index:200;transition:transform .25s ease;pointer-events:none;white-space:nowrap;max-width:90vw;box-shadow:0 4px 16px rgba(0,0,0,.3)}
+#toast.show{transform:translateX(-50%) translateY(0)}
+
+/* ── LEAD LIST CARD ────────────────────────────────── */
+.llcard{background:var(–sf);border:1px solid var(–bd);border-radius:var(–r);margin-bottom:.55rem;cursor:pointer;transition:box-shadow .15s,transform .1s;overflow:hidden}
+.llcard:hover{box-shadow:var(–sh2);transform:translateY(-1px)}
+.llcard-inner{padding:.85rem 1rem;display:flex;gap:.75rem;align-items:center}
+.llcard-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;margin-top:.2rem}
+.llcard-info{flex:1;min-width:0}
+.llcard-name{font-weight:600;font-size:.9rem;margin-bottom:.1rem}
+.llcard-addr{font-size:.73rem;color:var(–mut);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.llcard-action{font-size:.69rem;color:var(–org);margin-top:.2rem}
+.llcard-right{text-align:right;flex-shrink:0}
+.llcard-val{font-size:.82rem;font-weight:700;color:var(–red);margin-bottom:.2rem}
+
+/* ── SECTION DIVIDER ───────────────────────────────── */
+.sdiv{height:1px;background:var(–bd);margin:.85rem 0}
+
+/* ── OVERDUE BANNER ────────────────────────────────── */
+.overdue-banner{background:var(–rlt);border:1px solid #f5c0b0;border-radius:var(–r2);padding:.65rem 1rem;font-size:.8rem;color:var(–red);font-weight:500;margin-bottom:.65rem;display:flex;align-items:center;gap:.5rem}
+</style>
+
+</head>
+<body>
+
+<!-- GATE -->
+
+<div id="gate">
+  <div class="gbox">
+    <div class="glogo">
+      <div class="gicon"><svg width="30" height="30" viewBox="0 0 28 28" fill="none"><rect x="3" y="12" width="22" height="13" rx="1.5" fill="white" fill-opacity=".92"/><path d="M1 13L14 3L27 13" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><rect x="10" y="18" width="8" height="7" rx="1" fill="#CC2200"/></svg></div>
+      <div><div class="gname">RC Remodeling & Construction</div><div class="gsub2">ADU CRM · Client Management Platform</div></div>
+    </div>
+    <div class="gtitle">Welcome back, Ron</div>
+    <div class="gdesc">Enter your Anthropic API key to unlock AI-powered proposals, invoices, and document generation.</div>
+    <input class="ginput" type="password" id="apiKey" placeholder="sk-ant-..." autocomplete="off" onkeydown="if(event.key==='Enter')boot()">
+    <button class="gbtn" onclick="boot()">Enter CRM →</button>
+    <div class="gnote">Your key is stored only in this browser · Never sent to anyone except Anthropic</div>
+  </div>
+</div>
+
+<!-- APP -->
+
+<div id="app">
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <div class="tbrand">
+      <div class="ticon"><svg width="20" height="20" viewBox="0 0 28 28" fill="none"><rect x="3" y="12" width="22" height="13" rx="1.5" fill="white" fill-opacity=".88"/><path d="M1 13L14 3L27 13" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><rect x="10" y="18" width="8" height="7" rx="1" fill="#CC2200"/></svg></div>
+      <div><div class="tname">RC Remodeling & Construction</div><div class="ttag">ADU CRM · v3</div></div>
+    </div>
+    <div class="tacts">
+      <button class="ia" onclick="openAddLead()" title="New Lead" style="font-size:1.2rem">＋</button>
+      <button class="ia" onclick="saveAll()" title="Save">💾</button>
+      <button class="ia" id="sbtn" onclick="toggleSearch()" title="Search">🔍</button>
+      <button class="ia" onclick="toggleDark()" title="Dark Mode" id="darkBtn">🌙</button><button class="ia" onclick="openSettings()" title="Settings">⚙️</button>
+    </div>
+  </div>
+
+  <!-- SEARCH BAR -->
+
+  <div id="sbar">
+    <input class="fc" id="si" placeholder="Search by name, address, phone or email..." oninput="doSearch()" style="width:100%">
+  </div>
+
+  <!-- NAV -->
+
+  <div class="nav">
+    <button class="ni on" onclick="sw('dash')" id="nt-dash"><span class="ni-icon">📊</span><span class="ni-lbl">Dashboard</span></button>
+    <button class="ni" onclick="sw('pipeline')" id="nt-pipeline"><span class="ni-icon">🗂</span><span class="ni-lbl">Pipeline</span></button>
+    <button class="ni" onclick="sw('leads')" id="nt-leads"><span class="ni-icon">👥</span><span class="ni-lbl">Leads</span></button>
+    <button class="ni" onclick="sw('docs')" id="nt-docs"><span class="ni-icon">📄</span><span class="ni-lbl">Docs</span><span class="nbdg" id="docBdg" style="display:none">0</span></button>
+    <button class="ni" onclick="sw('fin')" id="nt-fin"><span class="ni-icon">💰</span><span class="ni-lbl">Finance</span></button>
+    <button class="ni" onclick="sw('log')" id="nt-log"><span class="ni-icon">📋</span><span class="ni-lbl">Activity</span></button>
+  </div>
+
+  <!-- FLOATING ACTION BUTTON -->
+
+<button class="fab" onclick="openAddLead()" title="Add New Lead" id="fabBtn">＋</button>
+
+  <div class="ct">
+
+```
+<!-- DASHBOARD -->
+<div class="tab on" id="tab-dash">
+  <div id="dOnboard"></div>
+  <div class="srow" id="dStats"></div>
+  <div id="dOverdueBanner"></div>
+  <div class="card"><div class="ch"><span class="ct3">🔴 Action Required Today</span><button class="btn bsm bp" onclick="openAddLead()">+ New Lead</button></div><div class="cb" id="dAttn"></div></div>
+  <div class="card"><div class="ch"><span class="ct3">💵 Payments Due</span><button class="btn bsm bs" onclick="sw('fin')">View All →</button></div><div class="cb" id="dPay"></div></div>
+  <div class="card"><div class="ch"><span class="ct3">📅 Recent Activity</span><button class="btn bsm bs" onclick="sw('log')">View All →</button></div><div class="cb" id="dRecent"></div></div>
+</div>
+
+<!-- PIPELINE -->
+<div class="tab" id="tab-pipeline">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.9rem">
+    <span style="font-size:.8rem;color:var(--mut)">Tap any card to open full client profile</span>
+    <button class="btn bsm bp" onclick="openAddLead()">+ Add Lead</button>
+  </div>
+  <div class="pw"><div class="pb" id="pBoard"></div></div>
+</div>
+
+<!-- LEADS -->
+<div class="tab" id="tab-leads">
+  <div style="display:flex;gap:.5rem;margin-bottom:.9rem;flex-wrap:wrap">
+    <input class="fc" id="lSrc" placeholder="🔍  Search leads..." style="flex:1;min-width:140px" oninput="renderLeads()">
+    <select class="fc" id="lFlt" style="width:auto;min-width:130px" onchange="renderLeads()">
+      <option value="">All Stages</option>
+      <option>New Lead</option><option>First Call Complete</option><option>Site Visit Scheduled</option>
+      <option>Site Visit Complete</option><option>Proposal Sent</option><option>Proposal Reviewed</option>
+      <option>Verbal Yes</option><option>Active Project</option><option>Closed Won</option>
+      <option>Closed Lost</option><option>Nurture</option>
+    </select>
+    <button class="btn bsm bp" onclick="openAddLead()">+ Add</button>
+  </div>
+  <div id="lList"></div>
+</div>
+
+<!-- DOCS -->
+<div class="tab" id="tab-docs">
+  <div class="btngrp" style="margin-bottom:1rem">
+    <button class="btn bdk" onclick="openDocGen('proposal')">📝 Generate Proposal</button>
+    <button class="btn bo" onclick="openDocGen('rfp')">💵 Generate Invoice (RFP)</button>
+    <button class="btn bs" onclick="openDocGen('changeorder')">🔄 Change Order</button>
+  </div>
+  <div class="card"><div class="ch"><span class="ct3">📁 Document History</span></div><div class="cb" id="docList"></div></div>
+</div>
+
+<!-- FINANCE -->
+<div class="tab" id="tab-fin">
+  <div class="srow" id="fStats"></div>
+  <div class="btngrp" style="margin-bottom:.9rem">
+    <button class="btn bsm bp" onclick="openAddPayment()">+ Payment Milestone</button>
+    <button class="btn bsm bs" onclick="openAddExpense()">+ Expense</button>
+  </div>
+  <div id="fStripeBanner"></div>
+  <div class="card">
+    <div class="ch">
+      <span class="ct3">📊 Project Financial Summary</span>
+      <select class="fc fcsm" id="fProj" style="width:auto;min-width:140px" onchange="renderFin()">
+        <option value="">All Projects</option>
+      </select>
+    </div>
+    <div class="cb" id="fSumm"></div>
+  </div>
+  <div class="card"><div class="ch"><span class="ct3">💵 Payment Schedule</span></div><div id="fPay"></div></div>
+  <div class="card"><div class="ch"><span class="ct3">🧾 Project Expenses</span></div><div class="cb" id="fExp"></div></div>
+</div>
+
+<!-- ACTIVITY LOG -->
+<div class="tab" id="tab-log">
+  <div class="card">
+    <div class="ch"><span class="ct3">📋 Full Activity Log</span>
+      <button class="btn bsm bdr" onclick="if(confirm('Clear entire activity log?')){DB.log=[];saveAndSync();toast('Log cleared');}">Clear Log</button>
+    </div>
+    <div class="cb" id="logList"></div>
+  </div>
+</div>
+```
+
+  </div>
+</div>
+
+<div id="mWrap"></div>
+<div id="sovl"></div>
+<div id="toast"></div>
+
+<script>
+// ─── CONSTANTS ────────────────────────────────────────
+const STAGES=[
+  {id:'new',lbl:'New Lead',c:'s1',dot:'#444'},
+  {id:'call',lbl:'First Call Complete',c:'s2',dot:'#1A4A8B'},
+  {id:'visit_s',lbl:'Site Visit Scheduled',c:'s3',dot:'#1A6B2D'},
+  {id:'visit_d',lbl:'Site Visit Complete',c:'s3',dot:'#1A6B2D'},
+  {id:'proposal',lbl:'Proposal Sent',c:'s4',dot:'#8B4A00'},
+  {id:'review',lbl:'Proposal Reviewed',c:'s5',dot:'#5A1A70'},
+  {id:'verbal',lbl:'Verbal Yes',c:'s6',dot:'#1A6B2D'},
+  {id:'active',lbl:'Active Project',c:'s7',dot:'#CC2200'},
+  {id:'won',lbl:'Closed Won',c:'s8',dot:'#003580'},
+  {id:'lost',lbl:'Closed Lost',c:'s9',dot:'#666'},
+  {id:'nurture',lbl:'Nurture',c:'s10',dot:'#444'},
+];
+const SM=Object.fromEntries(STAGES.map(s=>[s.id,s]));
+const SRCS=['Google Ad','Social Media','Referral','Website Form','Direct Call','Pre-Qualifier App','Other'];
+const ECATS=['Labor','Materials','Subcontractor','Permits & Fees','Equipment','Other'];
+const ECLS={labor:'elabor',materials:'ematerial',subcontractor:'esub','permits':'epermit',equipment:'eequip',other:'eother'};
+
+// ─── STATE ────────────────────────────────────────────
+let KEY='';
+let DB={leads:[],payments:[],expenses:[],docs:[],log:[],settings:{stripeLink:''},nid:1};
+
+// ─── CORE: saveAndSync ────────────────────────────────
+// EVERY mutation calls this. It saves to localStorage AND rerenders
+// all 7 views simultaneously — guaranteed cross-tab sync.
+function saveAndSync(){
+  try{
+    localStorage.setItem('rcdb',JSON.stringify(DB));
+  }catch(e){
+    console.warn('Storage save failed:',e.message);
+    // Continue rendering even if save fails (e.g. private mode storage limit)
+  }
+  renderDash();
+  renderPipeline();
+  renderLeads();
+  renderDocs();
+  renderFin();
+  renderLog();
+  updateDocBdg();
+}
+function saveAll(){localStorage.setItem('rcdb',JSON.stringify(DB));toast('Saved ✓');}
+
+function logAct(msg,lid){
+  DB.log.unshift({id:DB.nid++,msg,leadId:lid||null,time:new Date().toISOString()});
+  if(DB.log.length>300)DB.log=DB.log.slice(0,300);
+}
+
+// ─── BOOT ─────────────────────────────────────────────
+function boot(){
+  const k=g('apiKey').value.trim();
+  if(!k.startsWith('sk-ant-')){toast('Enter a valid API key (starts with sk-ant-)');return;}
+  KEY=k;localStorage.setItem('rck',k);
+  g('gate').classList.add('h');g('app').classList.add('v');
+  loadDB();saveAndSync();
+}
+document.addEventListener('DOMContentLoaded',()=>{
+  const k=localStorage.getItem('rck');
+  if(k&&k.startsWith('sk-ant-')){
+    KEY=k;g('gate').classList.add('h');g('app').classList.add('v');
+    loadDB();saveAndSync();
+  }
+});
+
+function loadDB(){
+  const s=localStorage.getItem('rcdb');
+  if(s){
+    try{
+      DB=JSON.parse(s);
+      if(!DB.log)DB.log=[];
+      if(!DB.settings)DB.settings={stripeLink:''};
+      if(!DB.docs)DB.docs=[];
+    }catch(e){}
+  } else seed();
+}
+
+function seed(){
+  DB.leads=[
+    {id:1,name:'Rebecca Tran',addr:'2513 Fisk Lane, Redondo Beach, CA 90278',phone:'(310) 555-0142',email:'rtran@email.com',stage:'proposal',goal:'Rental Income',type:'Detached',beds:'1',sqft:'600',value:185000,notes:'Proposal sent 1/26. Following up this week.',created:'2026-01-26',updated:'2026-01-26',nextAction:'Follow up call',nextDate:'2026-03-25',source:'Google Ad',financing:'HELOC',temp:'hot',closeDate:'2026-04-15',stageHistory:[{from:'New Lead',to:'Proposal Sent',date:'2026-01-26',note:''}]},
+    {id:2,name:'George Dimalanta',addr:'16409 Tupper St, North Hills, CA 91343',phone:'(818) 555-0198',email:'gdimalanta@email.com',stage:'active',goal:'Family Member',type:'Attached',beds:'2',sqft:'850',value:215000,notes:'Active project. Change order #102 approved. Framing crew on site this week.',created:'2025-08-01',updated:'2026-03-20',nextAction:'Site check + send RFP #3',nextDate:'2026-03-28',source:'Referral',financing:'Cash',temp:'warm',closeDate:'',stageHistory:[{from:'New Lead',to:'Active Project',date:'2025-08-01',note:'Signed contract'}]},
+    {id:3,name:'Maria Santos',addr:'4521 Maple Ave, Torrance, CA 90503',phone:'(310) 555-0271',email:'msantos@gmail.com',stage:'visit_s',goal:'Rental Income',type:'Garage Conversion',beds:'1',sqft:'400',value:0,notes:'Site visit scheduled Tuesday. Interested in rental income ADU.',created:'2026-03-20',updated:'2026-03-20',nextAction:'Site visit',nextDate:'2026-03-25',source:'Social Media',financing:'Not Sure',temp:'warm',closeDate:'',stageHistory:[]},
+    {id:4,name:'James Holloway',addr:'789 Oak Blvd, Hawthorne, CA 90250',phone:'(424) 555-0334',email:'jholloway@email.com',stage:'new',goal:'Rental Income',type:'Detached',beds:'2',sqft:'700',value:0,notes:'Google ad lead. Called — left voicemail.',created:'2026-03-23',updated:'2026-03-23',nextAction:'Call back',nextDate:'2026-03-23',source:'Google Ad',financing:'Unknown',temp:'cold',closeDate:'',stageHistory:[]},
+  ];
+  DB.payments=[
+    {id:1,leadId:2,label:'Deposit Upon Signing',pct:0,amount:1000,status:'paid',method:'Check',date:'2025-08-01',paidDate:'2025-08-05',rfp:'RFP-001',note:'Check #4421'},
+    {id:2,leadId:2,label:'15% Pre-Construction & Materials Deposit',pct:15,amount:32250,status:'paid',method:'Check',date:'2025-08-10',paidDate:'2025-08-15',rfp:'RFP-002',note:'Check #4440'},
+    {id:3,leadId:2,label:'Foundation & Site Preparation',pct:12,amount:25800,status:'paid',method:'Check',date:'2025-09-05',paidDate:'2025-09-10',rfp:'RFP-003',note:'Check #4462'},
+    {id:4,leadId:2,label:'Framing & Roofing',pct:12,amount:25800,status:'paid',method:'Check',date:'2025-10-01',paidDate:'2025-10-05',rfp:'RFP-004',note:'Check #4478'},
+    {id:5,leadId:2,label:'Rough MEP — Electrical, Plumbing & HVAC',pct:12,amount:25800,status:'due',method:'',date:'2026-03-30',paidDate:'',rfp:'RFP-005',note:'Due before MEP rough-in begins'},
+    {id:6,leadId:2,label:'Exterior, Insulation & Waterproofing',pct:10,amount:21500,status:'pending',method:'',date:'',paidDate:'',rfp:'RFP-006',note:'Due before exterior work begins'},
+    {id:7,leadId:2,label:'Drywall & Interior Prep',pct:10,amount:21500,status:'pending',method:'',date:'',paidDate:'',rfp:'RFP-007',note:'Due after rough inspections pass'},
+    {id:8,leadId:2,label:'Finish Work — Flooring, Tile & Cabinetry',pct:10,amount:21500,status:'pending',method:'',date:'',paidDate:'',rfp:'RFP-008',note:'Due before finish phase begins'},
+    {id:9,leadId:2,label:'Final Fixtures, Electrical & Paint',pct:10,amount:21500,status:'pending',method:'',date:'',paidDate:'',rfp:'RFP-009',note:'Due before final phase begins'},
+    {id:10,leadId:2,label:'Final Completion — Inspection & Walkthrough',pct:0,amount:18350,status:'pending',method:'',date:'',paidDate:'',rfp:'RFP-010',note:'Due after final inspection + walkthrough'},
+    {id:11,leadId:1,label:'Deposit Upon Signing',pct:0,amount:1000,status:'due',method:'',date:'2026-01-27',paidDate:'',rfp:'RFP-001',note:''},
+  ];
+  DB.expenses=[
+    {id:1,leadId:2,category:'Labor',label:'Framing crew — weeks 1-3',amount:18500,date:'2025-10-15',vendor:'In-house',note:''},
+    {id:2,leadId:2,category:'Materials',label:'Lumber & framing hardware',amount:12200,date:'2025-10-10',vendor:'Home Depot',note:''},
+    {id:3,leadId:2,category:'Subcontractor',label:'Electrical rough-in',amount:8500,date:'2025-11-01',vendor:'Elite Electric',note:''},
+    {id:4,leadId:2,category:'Permits & Fees',label:'Building permit (owner reimbursed)',amount:4800,date:'2025-09-01',vendor:'City of LA',note:''},
+  ];
+  DB.log=[
+    {id:1,msg:'George Dimalanta — moved to Active Project',leadId:2,time:'2025-08-01T10:00:00'},
+    {id:2,msg:'💰 Payment received: George Dimalanta — Deposit $21,500 via Check',leadId:2,time:'2025-08-05T11:00:00'},
+    {id:3,msg:'💰 Payment received: George Dimalanta — 2nd Payment $5,950 via Check',leadId:2,time:'2025-09-05T14:00:00'},
+    {id:4,msg:'Rebecca Tran — proposal sent',leadId:1,time:'2026-01-26T14:30:00'},
+    {id:5,msg:'Maria Santos added — site visit scheduled',leadId:3,time:'2026-03-20T09:15:00'},
+    {id:6,msg:'James Holloway added — new lead from Google Ad',leadId:4,time:'2026-03-23T11:00:00'},
+  ];
+  DB.settings={stripeLink:''};DB.nid=40;
+  localStorage.setItem('rcdb',JSON.stringify(DB));
+}
+
+// ─── RENDER ALL ───────────────────────────────────────
+function updateDocBdg(){
+  const b=g('docBdg');
+  if(DB.docs.length){b.style.display='block';b.textContent=DB.docs.length;}
+  else b.style.display='none';
+}
+
+// ─── DASHBOARD ────────────────────────────────────────
+function renderDash(){
+  const today=td();
+  const pipeline=DB.leads.reduce((s,l)=>s+(l.value||0),0);
+  const dueList=DB.payments.filter(p=>p.status==='due');
+  const dueAmt=dueList.reduce((s,p)=>s+p.amount,0);
+  const collected=DB.payments.filter(p=>p.status==='paid').reduce((s,p)=>s+p.amount,0);
+  const active=DB.leads.filter(l=>l.stage==='active').length;
+  const overdue=DB.payments.filter(p=>p.status==='due'&&p.date&&p.date<today);
+  const won=DB.leads.filter(l=>l.stage==='won').length;
+  const lost=DB.leads.filter(l=>l.stage==='lost').length;
+  const closeRate=won+lost>0?Math.round(won/(won+lost)*100):0;
+  // Forecast: sum of contract values for leads in verbal/active/won weighted by stage
+  const forecast=DB.leads.reduce((s,l)=>{
+    const w={verbal:.8,active:.95,won:1,proposal:.3,review:.5}[l.stage]||0;
+    return s+(l.value||0)*w;
+  },0);
+
+  // First-run onboarding
+  const hasLeads = DB.leads.filter(l=>l.stage!=='lost').length;
+  const dismissed = localStorage.getItem('rcOnboardDismissed');
+  const onboardEl = g('dOnboard');
+  if(onboardEl){
+    if(!dismissed && hasLeads <= 2){
+      onboardEl.innerHTML=`<div style="background:linear-gradient(135deg,var(--ink) 0%,#2A0800 100%);border-radius:var(--r);padding:1.25rem;margin-bottom:1rem;position:relative;overflow:hidden">
+        <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--red),var(--org))"></div>
+        <div style="font-size:.65rem;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--org);margin-bottom:.4rem">WELCOME TO RC CRM</div>
+        <div style="font-size:.95rem;font-weight:700;color:#fff;margin-bottom:.4rem">Your ADU business command center is ready.</div>
+        <div style="font-size:.8rem;color:#aaa;margin-bottom:1rem;line-height:1.6">Start by adding your first real lead. Then generate a proposal, set up the payment schedule, and track everything from here.</div>
+        <div style="display:flex;gap:.5rem;flex-wrap:wrap">
+          <button class="btn bp bsm" onclick="openAddLead()">+ Add First Lead</button>
+          <button class="btn" style="background:rgba(255,255,255,.1);color:#ddd;padding:.4rem .8rem;border-radius:6px;font-size:.75rem" onclick="localStorage.setItem('rcOnboardDismissed','1');g('dOnboard').innerHTML='';toast('Got it!')">Dismiss</button>
+        </div>
+      </div>`;
+    } else {
+      onboardEl.innerHTML='';
+    }
+  }
+  g('dStats').innerHTML=`
+    <div class="sc click" onclick="sw('leads')">
+      <div class="sv">${DB.leads.filter(l=>l.stage!=='lost').length}</div>
+      <div class="sl">Active Leads</div>
+      <div class="ss">${active} in construction</div>
+    </div>
+    <div class="sc click" onclick="sw('pipeline')">
+      <div class="sv">$${fmt(pipeline)}</div>
+      <div class="sl">Pipeline Value</div>
+      <div class="ss">${DB.leads.filter(l=>['proposal','review','verbal'].includes(l.stage)).length} proposals out</div>
+    </div>
+    <div class="sc green">
+      <div class="sv" style="color:var(--grn)">$${fmt(collected)}</div>
+      <div class="sl">Total Collected</div>
+      <div class="ss g">${pipeline>0?Math.round(collected/pipeline*100):0}% of pipeline</div>
+    </div>
+    <div class="sc ${dueList.length?'':'green'} click" onclick="sw('fin')">
+      <div class="sv" style="color:${dueList.length?'var(--red)':'var(--grn)'}">$${fmt(dueAmt)}</div>
+      <div class="sl">Payments Due</div>
+      <div class="ss ${dueList.length?'':'g'}">${dueList.length} invoice${dueList.length!==1?'s':''}</div>
+    </div>
+    <div class="sc click" onclick="sw('leads')" style="display:none" id="extraStat1">
+      <div class="sv" style="color:${closeRate>=40?'var(--grn)':'var(--red)'}">${closeRate}%</div>
+      <div class="sl">Close Rate</div>
+      <div class="ss">${won} won / ${won+lost} total</div>
+    </div>`;
+
+  // Overdue banner
+  const ob=g('dOverdueBanner');
+  ob.innerHTML=overdue.length?`<div class="overdue-banner">⚠️ ${overdue.length} payment${overdue.length>1?'s are':' is'} overdue — <button class="btn bxs bdr" style="margin-left:.35rem" onclick="sw('fin')">View →</button></div>`:'' ;
+
+  // Attention
+  const attn=DB.leads.filter(l=>l.nextDate&&l.nextDate<=today&&!['won','lost'].includes(l.stage))
+    .sort((a,b)=>a.nextDate.localeCompare(b.nextDate));
+  g('dAttn').innerHTML=attn.length?attn.map(l=>`
+    <div class="row" onclick="openLead(${l.id})" style="cursor:pointer">
+      <div class="rd ${l.nextDate<today?'dlt':'ddu'}"></div>
+      <div class="ri">
+        <div class="rl">${l.name}</div>
+        <div class="rsb">${l.nextAction||'Follow up needed'} · ${l.addr.split(',')[0]}</div>
+      </div>
+      <div class="rr">
+        ${l.phone?`<a class="btn bxs bs" href="tel:${l.phone}" onclick="event.stopPropagation()">📞 Call</a>`:''}
+        ${l.phone?`<a class="btn bxs bs" href="sms:${l.phone}" onclick="event.stopPropagation()">💬 Text</a>`:''}
+        <span class="bdg ${l.nextDate<today?'bdg-red':'bdg-orange'}">${l.nextDate<today?'Overdue':'Today'}</span>
+      </div>
+    </div>`).join('')
+    :'<div class="empty"><div class="empty-ico">✅</div><div class="empty-txt">Nothing overdue — you\'re all caught up</div></div>';
+
+  // Due payments
+  g('dPay').innerHTML=dueList.length?dueList.slice(0,5).map(p=>{
+    const l=DB.leads.find(x=>x.id===p.leadId);
+    const isOD=p.date&&p.date<today;
+    return `<div class="row">
+      <div class="rd ${isOD?'dlt':'ddu'}"></div>
+      <div class="ri">
+        <div class="rl">${p.label}</div>
+        <div class="rsb">${l?l.name+' · ':''} ${p.rfp?p.rfp+' · ':''} ${p.date?fmtDate(p.date):''} ${isOD?'⚠️':''}</div>
+      </div>
+      <div class="rr">
+        <span class="ram">$${p.amount.toLocaleString()}</span>
+        <button class="btn bsm bg" onclick="quickPaid(${p.id})">✓ Mark Paid</button>
+      </div>
+    </div>`;
+  }).join('')
+  :(()=>{
+    const next=DB.payments.filter(p=>p.status==='pending'&&p.date).sort((a,b)=>a.date.localeCompare(b.date))[0];
+    const ll=next?DB.leads.find(x=>x.id===next.leadId):null;
+    return next?`<div class="row"><div class="rd dn"></div><div class="ri"><div class="rl">Next: ${next.label}</div><div class="rsb">${ll?ll.name+' · ':''}${fmtDate(next.date)}</div></div><span class="ram" style="color:var(--mut)">$${next.amount.toLocaleString()}</span></div><div class="empty" style="padding:1rem 0 0"><div class="empty-ico">💚</div><div class="empty-txt">All caught up — no payments due</div></div>`:'<div class="empty"><div class="empty-ico">💚</div><div class="empty-txt">No payments due or scheduled</div></div>';
+  })();
+
+  // Recent activity
+  g('dRecent').innerHTML=DB.log.slice(0,6).map(a=>`
+    <div class="ait">
+      <div class="aitdot"></div>
+      <div class="aitmsg">${a.msg}${a.leadId?` <span style="color:var(--red);cursor:pointer;font-size:.72rem" onclick="openLead(${a.leadId})">[open →]</span>`:''}</div>
+      <div class="aittm">${timeAgo(a.time)}</div>
+    </div>`).join('')||'<div class="empty"><div class="empty-txt">No activity yet</div></div>';
+}
+
+// ─── PIPELINE ─────────────────────────────────────────
+function renderPipeline(){
+  const today=td();
+  g('pBoard').innerHTML=STAGES.filter(s=>s.id!=='lost').map(st=>{
+    const cards=DB.leads.filter(l=>l.stage===st.id);
+    const colVal=cards.reduce((s,l)=>s+(l.value||0),0);
+    return `<div class="pc">
+      <div class="ph ${st.c}"><span>${st.lbl}</span><div style="display:flex;align-items:center;gap:.35rem"><span style="font-size:.6rem;opacity:.75">${colVal?'$'+fmt(colVal):''}</span><span class="cn">${cards.length}</span></div></div>
+      <div class="pcs">${cards.length?cards.map(l=>{
+        const urgent=l.nextDate&&l.nextDate<=today;
+        const due=DB.payments.filter(p=>p.leadId===l.id&&p.status==='due').length;
+        return `<div class="pcd" onclick="openLead(${l.id})">
+          ${urgent?`<div class="purg" style="background:var(--org);border-color:#fff"></div>`:''}
+          ${due?`<div class="purg" style="background:var(--red);border-color:#fff;right:.4rem;top:.4rem"></div>`:''}
+          ${!['won','lost','active'].includes(l.stage)&&l.updated&&Math.floor((Date.now()-new Date(l.updated+'T12:00:00'))/86400000)>14?`<div style="position:absolute;bottom:.3rem;right:.35rem;font-size:.55rem;color:var(--mut)" title="No activity in ${Math.floor((Date.now()-new Date(l.updated+'T12:00:00'))/86400000)} days">⏰</div>`:''}
+          <div class="pn">${l.name}</div>
+          <div class="pa">${l.addr.split(',')[0]}</div>
+          <div class="pf">
+            <span class="pv">${l.value?'$'+fmt(l.value):'TBD'}</span>
+            <span style="font-size:.63rem;color:${l.temp==='hot'?'var(--red)':l.temp==='cold'?'#88AAFF':'var(--mut)'}">${l.temp==='hot'?'🔥':l.temp==='cold'?'❄️':''}${l.type||''}</span>
+          </div>
+        </div>`;
+      }).join(''):`<div style="font-size:.68rem;color:var(--lit);padding:.5rem;text-align:center">Empty</div>`}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ─── LEADS LIST ───────────────────────────────────────
+function renderLeads(){
+  const q=(g('lSrc')?.value||'').toLowerCase();
+  const sf=g('lFlt')?.value||'';
+  const today=td();
+  const leads=DB.leads.filter(l=>{
+    const ms=!q||l.name.toLowerCase().includes(q)||l.addr.toLowerCase().includes(q)||(l.email||'').toLowerCase().includes(q)||(l.phone||'').includes(q);
+    const mf=!sf||(SM[l.stage]?.lbl===sf);
+    return ms&&mf;
+  });
+  const el=g('lList');
+  if(!leads.length){el.innerHTML='<div class="empty"><div class="empty-ico">👥</div><div class="empty-txt">No leads match your search</div></div>';return;}
+  el.innerHTML=leads.map(l=>{
+    const s=SM[l.stage]||{lbl:l.stage,dot:'#888'};
+    const pmts=DB.payments.filter(p=>p.leadId===l.id);
+    const col=pmts.filter(p=>p.status==='paid').reduce((s,p)=>s+p.amount,0);
+    const dueN=pmts.filter(p=>p.status==='due').length;
+    const overdue=pmts.filter(p=>p.status==='due'&&p.date&&p.date<today).length;
+    return `<div class="llcard" onclick="openLead(${l.id})">
+      <div class="llcard-inner">
+        <div class="llcard-dot" style="background:${s.dot||'#888'}"></div>
+        <div class="llcard-info">
+          <div style="display:flex;align-items:center;gap:.4rem">
+            <div class="llcard-name">${l.name}</div>
+            ${l.temp?`<span class="bdg ${l.temp==='hot'?'temp-hot':l.temp==='cold'?'temp-cold':'temp-warm'}" style="font-size:.58rem">${l.temp==='hot'?'🔥 Hot':l.temp==='cold'?'❄️ Cold':'🌤 Warm'}</span>`:''}
+          </div>
+          <div class="llcard-addr">${l.addr}</div>
+          ${l.nextAction?`<div class="llcard-action">→ ${l.nextAction}${l.nextDate?' · '+fmtDate(l.nextDate):''}</div>`:''}
+        </div>
+        <div class="llcard-right">
+          ${l.value?`<div class="llcard-val">$${l.value.toLocaleString()}</div>`:''}
+          <span class="bdg bdg-gray" style="font-size:.58rem">${s.lbl}</span>
+          ${col?`<div style="font-size:.66rem;color:var(--grn);margin-top:.2rem;font-weight:500">$${fmt(col)} collected</div>`:''}
+          ${overdue?`<div style="font-size:.66rem;color:var(--red);font-weight:600">⚠️ ${overdue} overdue</div>`:dueN?`<div style="font-size:.66rem;color:var(--org)">${dueN} payment${dueN>1?'s':''} due</div>`:''}
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ─── LEAD DETAIL ──────────────────────────────────────
+function openLead(id){
+  const l=DB.leads.find(x=>x.id===id);if(!l)return;
+  const s=SM[l.stage]||{lbl:l.stage};
+  const pmts=DB.payments.filter(p=>p.leadId===id).sort((a,b)=>{
+    const o={paid:0,due:1,pending:2};return(o[a.status]??3)-(o[b.status]??3);
+  });
+  const exps=DB.expenses.filter(e=>e.leadId===id);
+  const ldocs=DB.docs.filter(d=>d.leadId===id);
+  const paid=pmts.filter(p=>p.status==='paid').reduce((s,p)=>s+p.amount,0);
+  const due=pmts.filter(p=>p.status==='due').reduce((s,p)=>s+p.amount,0);
+  const pending=pmts.filter(p=>p.status==='pending').reduce((s,p)=>s+p.amount,0);
+  const totExp=exps.reduce((s,e)=>s+e.amount,0);
+  const profit=(l.value||0)-totExp;
+  const pct=l.value&&l.value>0?Math.min(100,Math.round(paid/l.value*100)):0;
+  const today=td();
+  const overdueCount=pmts.filter(p=>p.status==='due'&&p.date&&p.date<today).length;
+
+  openM(`
+    <div class="moh"><span class="mot">${l.name}</span><button class="mox" onclick="closeM()">✕</button></div>
+    <div class="mbd">
+
+      <!-- HEADER -->
+      <div class="dethd">
+        <div class="detname">${l.name}</div>
+        <div class="detaddr">${l.addr}</div>
+        <div class="detbdgs">
+          <span class="detb">${s.lbl}</span>
+          ${l.value?`<span class="detb r">$${l.value.toLocaleString()}</span>`:''}
+          ${l.goal?`<span class="detb">${l.goal}</span>`:''}${l.temp?`<span class="detb ${l.temp==='hot'?'r':''}">${l.temp==='hot'?'🔥 Hot':l.temp==='cold'?'❄️ Cold':'🌤 Warm'}</span>`:''}
+          ${l.type?`<span class="detb">${l.type} ADU</span>`:''}
+          ${l.source?`<span class="detb">${l.source}</span>`:''}
+          ${paid>=l.value&&l.value>0?`<span class="detb g">Fully Paid ✓</span>`:''}
+        </div>
+        ${l.value?`
+          <div style="margin-bottom:.8rem">
+            <div class="prog-label">
+              <span>Collected: <strong style="color:#88ffaa">$${fmt(paid)}</strong></span>
+              <span>${pct}% of $${fmt(l.value)}</span>
+            </div>
+            <div class="prog-wrap"><div class="prog-fill" style="width:${pct}%"></div></div>
+          </div>`:''
+        }
+        <div class="detacts">
+          <button class="detbtn" onclick="closeM();editLead(${id})">✏️ Edit</button>
+          <button class="detbtn" onclick="closeM();openDocGen('proposal',${id})">📝 Proposal</button>
+          <button class="detbtn" onclick="closeM();openDocGen('rfp',${id})">💵 Invoice</button>
+          <button class="detbtn" onclick="closeM();openDocGen('changeorder',${id})">🔄 CO</button>
+          <button class="detbtn" onclick="closeM();moveStage(${id})">→ Move Stage</button>
+          ${l.value?`<button class="detbtn" style="background:rgba(26,107,45,.35);color:#88ffaa" onclick="closeM();generatePaymentSchedule(${id},${l.value||0})">📅 Auto-Schedule</button>`:''}
+          ${l.phone?`<a class="detbtn" href="tel:${l.phone}">📞 Call</a>`:''}
+          ${l.phone?`<a class="detbtn" href="sms:${l.phone}">💬 Text</a>`:''}
+          ${l.email?`<a class="detbtn" href="mailto:${l.email}?subject=Your ADU Project — RC Remodeling">✉️ Email</a>`:''}
+        </div>
+      </div>
+
+      <!-- INFO GRID -->
+      <div class="ig">
+        <div class="ii"><div class="il">Phone</div><div class="iv"><a href="tel:${l.phone||''}" style="color:var(--red)">${l.phone||'—'}</a></div></div>
+        <div class="ii"><div class="il">Email</div><div class="iv" style="font-size:.78rem;word-break:break-all"><a href="mailto:${l.email||''}" style="color:var(--red)">${l.email||'—'}</a></div></div>
+        <div class="ii"><div class="il">ADU Size</div><div class="iv">${l.beds||'?'} bed · ${l.sqft||'?'} sqft</div></div>
+        <div class="ii"><div class="il">Financing</div><div class="iv">${l.financing||'—'}</div></div>
+        <div class="ii"><div class="il">Next Action</div><div class="iv" style="color:var(--org)">${l.nextAction||'—'}</div></div>
+        <div class="ii"><div class="il">Due Date</div><div class="iv" style="color:${l.nextDate&&l.nextDate<today?'var(--red)':'inherit'}">${l.nextDate?fmtDate(l.nextDate):'—'}</div></div>
+        <div class="ii"><div class="il">Lead Age</div><div class="iv"><span style="color:var(--mut)">${Math.floor((Date.now()-new Date((l.created||l.updated)+'T12:00:00'))/86400000)} days since added</span></div></div>
+        ${l.closeDate?`<div class="ii"><div class="il">Est. Close Date</div><div class="iv" style="color:var(--grn);font-weight:600">${fmtDate(l.closeDate)}</div></div>`:''}
+        ${totExp?`<div class="ii"><div class="il">Total Expenses</div><div class="iv" style="color:var(--org)">$${fmt(totExp)}</div></div>`:''}
+        ${totExp&&l.value?`<div class="ii"><div class="il">Est. Profit</div><div class="iv" style="color:${profit>=0?'var(--grn)':'var(--red)'}">$${fmt(profit)} (${l.value>0?Math.round(profit/l.value*100):0}%)</div></div>`:''}
+      </div>
+
+      <!-- PAYMENT SCHEDULE -->
+      <div class="slbl">
+        💵 Payment Schedule
+        <button class="btn bxs bp" onclick="closeM();openAddPayment(${id})">+ Add Milestone</button>
+      </div>
+
+      ${overdueCount?`<div class="overdue-banner" style="margin-bottom:.65rem">⚠️ ${overdueCount} payment${overdueCount>1?'s are':' is'} past due date</div>`:''}
+
+      ${pmts.length?`
+        <!-- PAYMENT TOTALS -->
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.5rem;margin-bottom:.85rem">
+          <div style="background:var(--glt);border:1px solid #b8e0c0;border-radius:var(--r2);padding:.6rem .75rem;text-align:center">
+            <div style="font-size:1rem;font-weight:700;color:var(--grn)">$${fmt(paid)}</div>
+            <div style="font-size:.62rem;text-transform:uppercase;letter-spacing:.06em;color:var(--grn);font-weight:500">Collected</div>
+          </div>
+          <div style="background:var(--olt);border:1px solid #f5c090;border-radius:var(--r2);padding:.6rem .75rem;text-align:center">
+            <div style="font-size:1rem;font-weight:700;color:var(--org)">$${fmt(due)}</div>
+            <div style="font-size:.62rem;text-transform:uppercase;letter-spacing:.06em;color:var(--org);font-weight:500">Due Now</div>
+          </div>
+          <div style="background:var(--sf2);border:1px solid var(--bd);border-radius:var(--r2);padding:.6rem .75rem;text-align:center">
+            <div style="font-size:1rem;font-weight:700;color:var(--ink2)">$${fmt(pending)}</div>
+            <div style="font-size:.62rem;text-transform:uppercase;letter-spacing:.06em;color:var(--mut);font-weight:500">Upcoming</div>
+          </div>
+        </div>
+
+        <!-- PAYMENT MILESTONE CARDS -->
+        ${pmts.map((p,i)=>{
+          const isOD=p.status==='due'&&p.date&&p.date<today;
+          const cls=p.status==='paid'?'paid':isOD?'overdue':p.status==='due'?'due':'pending';
+          const dotCls=p.status==='paid'?'dp':isOD?'dlt':p.status==='due'?'ddu':'dpnd';
+          const pctLeft=l.value&&l.value>0?Math.round(p.amount/l.value*100):0;
+          return `<div class="pmcard ${cls}">
+            <div class="pmcard-top">
+              <div class="pmcard-status ${dotCls}"></div>
+              <div class="pmcard-info">
+                <div class="pmcard-label">${p.label}</div>
+                <div class="pmcard-meta">
+                  ${pctLeft?`<span>${pctLeft}% of contract</span>`:''}
+                  ${p.rfp?`<span> · ${p.rfp}</span>`:''}
+                  ${p.date&&p.status!=='paid'?`<span style="color:${isOD?'var(--red)':'var(--mut)'}"> · Due ${p.date}${isOD?' ⚠️':''}</span>`:''}
+                  ${p.status==='paid'?`<span style="color:var(--grn)"> · Paid ${fmtDate(p.paidDate)} via ${p.method||'—'}${p.note?' · '+p.note:''}</span>`:''}
+                  ${p.status!=='paid'&&p.note?`<span style="color:var(--mut);font-style:italic"> · ${p.note}</span>`:''}
+                </div>
+              </div>
+              <div class="pmcard-right">
+                <div class="pmcard-amount" style="color:${p.status==='paid'?'var(--grn)':isOD?'var(--red)':p.status==='due'?'var(--org)':'var(--mut)'}">$${p.amount.toLocaleString()}</div>
+                ${p.status==='paid'?`<span class="bdg bdg-green">✓ Paid</span>`:`<span class="bdg ${cls==='overdue'?'bdg-red':cls==='due'?'bdg-orange':'bdg-gray'}">${cls==='overdue'?'Overdue':cls==='due'?'Due':'Pending'}</span>`}
+              </div>
+            </div>
+            ${p.status!=='paid'?`
+              <div class="pmcard-actions">
+                ${p.status==='due'?`<button class="btn bxs bg" onclick="closeM();quickPaid(${p.id})">✓ Mark Paid</button>`:''}
+                ${p.status==='pending'?`<button class="btn bxs bo" onclick="markDue(${p.id})">Send Invoice</button>`:''}
+                <button class="btn bxs bs" onclick="closeM();genInvoiceFor(${p.id},${id})">📄 Generate RFP</button>
+                ${DB.settings.stripeLink?`<button class="btn bxs bbl" onclick="closeM();emailPayLink(${id})">💳 Send Pay Link</button>`:''}
+                <button class="btn bxs bdr" style="margin-left:auto" onclick="deletePmt(${p.id},${id})">✕ Delete</button>
+              </div>`:
+              `<div class="pmcard-actions" style="justify-content:flex-end">
+                <button class="btn bxs bdr" onclick="deletePmt(${p.id},${id})">✕ Delete</button>
+              </div>`
+            }
+          </div>`;
+        }).join('')}
+
+        <!-- TOTALS FOOTER -->
+        <div style="background:var(--sf2);border:1px solid var(--bd);border-radius:var(--r2);padding:.75rem 1rem;margin-top:.25rem;display:flex;flex-wrap:wrap;gap:.75rem;justify-content:space-between;font-size:.8rem">
+          <span>Contract: <strong>$${fmt(l.value||0)}</strong></span>
+          <span>Collected: <strong style="color:var(--grn)">$${fmt(paid)}</strong></span>
+          <span>Remaining: <strong style="color:${(l.value||0)-paid>0?'var(--org)':'var(--grn)'}">$${fmt((l.value||0)-paid)}</strong></span>
+        </div>`
+      :`<div style="background:var(--sf2);border:1px solid var(--bd);border-radius:var(--r);padding:1rem;font-size:.83rem;color:var(--mut);text-align:center;margin-bottom:.85rem">
+          No payment milestones yet.
+          ${l.value?`<br><br>
+          <button class="btn bsm bp" style="margin-top:.25rem" onclick="closeM();generatePaymentSchedule(${id},${l.value})">📅 Auto-Generate 10-Payment Schedule</button>
+          <div style="font-size:.72rem;margin-top:.5rem;color:var(--lit)">Creates the standard RC milestone schedule for $${(l.value||0).toLocaleString()}</div>`:'<br><span style="font-size:.75rem">Set a contract value on this lead first, then auto-generate the schedule.</span>'}
+          <br><button class="btn bsm bs" style="margin-top:.5rem" onclick="closeM();openAddPayment(${id})">+ Add Custom Milestone</button>
+        </div>`}
+
+      <!-- EXPENSES -->
+      <div class="slbl">🧾 Project Expenses
+        <button class="btn bxs bs" onclick="closeM();openAddExpense(${id})">+ Add</button>
+      </div>
+      ${exps.length?`
+        <div class="card" style="margin-bottom:.9rem"><div class="cb">
+          ${exps.map(e=>{const cls=ECLS[e.category.toLowerCase().split(' ')[0]]||'eother';return`
+            <div class="row ${cls}" style="padding-left:.55rem">
+              <div class="ri"><div class="rl">${e.label}</div><div class="rsb">${e.category}${e.vendor?' · '+e.vendor:''}${e.date?' · '+e.date:''}</div></div>
+              <span class="ram" style="color:var(--ink2)">$${e.amount.toLocaleString()}</span>
+            </div>`;}).join('')}
+          <div style="text-align:right;padding-top:.7rem;border-top:1px solid var(--bd);font-size:.8rem;margin-top:.1rem">
+            Total Expenses: <strong style="color:var(--org)">$${fmt(totExp)}</strong>
+            ${l.value?`&nbsp;·&nbsp; Est. Profit: <strong style="color:${profit>=0?'var(--grn)':'var(--red)'}">$${fmt(profit)}</strong>`:''}
+          </div>
+        </div></div>`:'<div style="font-size:.8rem;color:var(--mut);margin-bottom:.85rem">No expenses logged.</div>'}
+
+      <!-- PAYMENT LINK -->
+      ${DB.settings.stripeLink?`
+        <div class="slbl">💳 Client Payment Link</div>
+        <div class="stripe-card">
+          <div class="stripe-card-title">Send to client for secure online payment</div>
+          <div class="stripe-card-url">${DB.settings.stripeLink}</div>
+          <div class="stripe-card-btns">
+            <button class="stripe-card-btn" onclick="copyPayLink()">📋 Copy Link</button>
+            <button class="stripe-card-btn" onclick="emailPayLink(${id})">📧 Email to ${l.name.split(' ')[0]}</button>
+          </div>
+        </div>`:''}
+
+      <!-- DOCUMENTS -->
+      ${ldocs.length?`
+        <div class="slbl">📄 Documents</div>
+        ${ldocs.map(d=>`<div class="row">
+          <div class="ri"><div class="rl">${d.type} <span style="color:var(--mut);font-size:.7rem">· ${d.date}</span></div><div class="rsb">${d.desc||''}</div></div>
+          <div class="rr"><button class="btn bxs bs" onclick="viewDoc(${d.id})">View</button><button class="btn bxs bp" onclick="emailDocById(${d.id})">Email</button></div>
+        </div>`).join('')}`:''}
+
+      <!-- STAGE HISTORY -->
+      ${l.stageHistory&&l.stageHistory.length?`
+        <div class="slbl">📍 Stage History</div>
+        <div style="background:var(--sf2);border:1px solid var(--bd);border-radius:var(--r2);padding:.75rem;margin-bottom:.85rem">
+          ${l.stageHistory.slice(-5).reverse().map(h=>`
+            <div style="display:flex;gap:.5rem;padding:.35rem 0;border-bottom:1px solid var(--bd);font-size:.78rem">
+              <span style="color:var(--mut);flex-shrink:0">${fmtDate(h.date)}</span>
+              <span><strong>${h.from}</strong> → <strong style="color:var(--red)">${h.to}</strong>${h.note?' — '+h.note:''}</span>
+            </div>`).join('')}
+        </div>`:''}
+      <!-- NOTES -->
+      <div class="slbl">📝 Notes & Updates</div>
+      <div style="background:var(--sf2);border:1px solid var(--bd);border-radius:var(--r2);padding:.9rem;margin-bottom:.75rem;font-size:.83rem;line-height:1.7;white-space:pre-wrap;max-height:180px;overflow-y:auto;color:var(--ink2)">${l.notes||'No notes yet. Add your first note below.'}</div>
+      <div style="display:flex;gap:.5rem">
+        <input class="fc" id="ni_${id}" placeholder="Add a note or update..." style="flex:1">
+        <button class="btn bsm bp" onclick="addNote(${id})">Add</button>
+      </div>
+
+    </div>
+    <div class="mft">
+      <button class="btn bsm bdr" onclick="delLead(${id})">🗑 Delete</button>
+      <button class="btn bs" onclick="closeM()">Close</button>
+    </div>`);
+}
+
+function markDue(pmtId){
+  const p=DB.payments.find(x=>x.id===pmtId);
+  if(!p)return;
+  p.status='due';
+  if(!p.date)p.date=td();
+  const l=DB.leads.find(x=>x.id===p.leadId);
+  logAct(`${l?.name||'Client'}: "${p.label}" marked as due — $${p.amount.toLocaleString()}`,p.leadId);
+  saveAndSync();toast('Marked as due — ready to invoice ✓');
+}
+
+function deletePmt(pmtId,leadId){
+  if(!confirm('Delete this payment milestone?'))return;
+  DB.payments=DB.payments.filter(p=>p.id!==pmtId);
+  logAct('Payment milestone deleted',leadId);
+  saveAndSync();closeM();openLead(leadId);
+}
+
+function genInvoiceFor(pmtId,leadId){
+  const p=DB.payments.find(x=>x.id===pmtId);
+  closeM();
+  openDocGen('rfp',leadId,p);
+}
+
+function addNote(id){
+  const el=g('ni_'+id);const txt=el.value.trim();if(!txt)return;
+  const l=DB.leads.find(x=>x.id===id);
+  l.notes=(l.notes?l.notes+'\n\n':'')+`[${new Date().toLocaleDateString('en-US')}] ${txt}`;
+  l.updated=td();
+  logAct(`Note on ${l.name}: "${txt.substring(0,60)}${txt.length>60?'...':''}"`,id);
+  saveAndSync();closeM();openLead(id);
+}
+
+function delLead(id){
+  if(!confirm('Delete this lead and ALL associated payments, expenses and documents?'))return;
+  const l=DB.leads.find(x=>x.id===id);
+  logAct(`Lead deleted: ${l?.name||'Unknown'}`);
+  DB.leads=DB.leads.filter(x=>x.id!==id);
+  DB.payments=DB.payments.filter(p=>p.leadId!==id);
+  DB.expenses=DB.expenses.filter(e=>e.leadId!==id);
+  DB.docs=DB.docs.filter(d=>d.leadId!==id);
+  saveAndSync();closeM();toast('Lead deleted');
+}
+
+function copyPayLink(){navigator.clipboard.writeText(DB.settings.stripeLink).then(()=>toast('Payment link copied ✓'));}
+function emailPayLink(id){
+  const l=DB.leads.find(x=>x.id===id);if(!l)return;
+  if(!l.email){toast('No email on file for '+l.name+' — edit lead to add one');return;}
+  const body=`Hi ${l.name.split(' ')[0]},\n\nHere is your secure online payment link for your ADU project:\n\n${DB.settings.stripeLink}\n\nYou can pay by credit card, debit card, or bank transfer. Payment is due within 48 hours of invoicing per our agreement.\n\nThank you,\nRon Cohen\nRC Remodeling & Construction\n(818) 633-1025`;
+  window.location.href=`mailto:${l.email}?subject=${encodeURIComponent('Payment Link — RC Remodeling & Construction')}&body=${encodeURIComponent(body)}`;
+  logAct(`Payment link emailed to ${l.name}`,id);
+  saveAndSync();toast('Opening email...');
+}
+
+// ─── ADD / EDIT LEAD ──────────────────────────────────
+function openAddLead(pre){
+  const p=pre||{};
+  openM(`
+    <div class="moh"><span class="mot">${p.id?'Edit Lead':'New Lead'}</span><button class="mox" onclick="closeM()">✕</button></div>
+    <div class="mbd">
+      <div class="fr"><div class="fg"><label>Full Name *</label><input class="fc" id="fn" value="${esc(p.name||'')}" placeholder="Jane Smith"></div>
+        <div class="fg"><label>Phone</label><input class="fc" id="fp" value="${esc(p.phone||'')}" placeholder="(310) 555-0000" type="tel"></div></div>
+      <div class="fg"><label>Email</label><input class="fc" id="fe" value="${esc(p.email||'')}" placeholder="jane@email.com" type="email"></div>
+      <div class="fg"><label>Project Address *</label><input class="fc" id="fa" value="${esc(p.addr||'')}" placeholder="123 Main St, Los Angeles, CA 90001"></div>
+      <div class="fr">
+        <div class="fg"><label>Goal</label><select class="fc" id="fg2">${['Rental Income','Family Member','Both','Other'].map(x=>`<option ${x===p.goal?'selected':''}>${x}</option>`).join('')}</select></div>
+        <div class="fg"><label>ADU Type</label><select class="fc" id="ft">${['Detached','Attached','Garage Conversion','JADU','Unknown'].map(x=>`<option ${x===p.type?'selected':''}>${x}</option>`).join('')}</select></div>
+      </div>
+      <div class="fr3">
+        <div class="fg"><label>Bedrooms</label><select class="fc" id="fb">${['Studio','1','2','3','TBD'].map(x=>`<option ${x===p.beds?'selected':''}>${x}</option>`).join('')}</select></div>
+        <div class="fg"><label>Sqft</label><input class="fc" id="fsq" value="${p.sqft||''}" type="number" placeholder="600"></div>
+        <div class="fg"><label>Contract Value ($)</label><input class="fc" id="fv" value="${p.value||''}" type="number" placeholder="185000"></div>
+      </div>
+      <div class="fr">
+        <div class="fg"><label>Lead Source</label><select class="fc" id="fsc">${SRCS.map(x=>`<option ${x===p.source?'selected':''}>${x}</option>`).join('')}</select></div>
+        <div class="fg"><label>Financing</label><select class="fc" id="ffi">${['Unknown','Cash','HELOC','Cash-Out Refi','Construction Loan','Needs Guidance'].map(x=>`<option ${x===p.financing?'selected':''}>${x}</option>`).join('')}</select></div>
+      </div>
+      <div class="fr">
+        <div class="fg"><label>Stage</label><select class="fc" id="fst">${STAGES.map(s=>`<option value="${s.id}" ${s.id===(p.stage||'new')?'selected':''}>${s.lbl}</option>`).join('')}</select></div>
+        <div class="fg"><label>Lead Temp</label><select class="fc" id="ftemp"><option value="hot" ${(p.temp||'')==='hot'?'selected':''}>🔥 Hot — Ready to sign</option><option value="warm" ${(p.temp||'warm')==='warm'?'selected':''}>🌤 Warm — Interested</option><option value="cold" ${(p.temp||'')==='cold'?'selected':''}>❄️ Cold — Early stage</option></select></div>
+        <div class="fg"><label>Next Action Date</label><input type="date" class="fc" id="fnd" value="${p.nextDate||''}"></div>
+      </div>
+      <div class="fg"><label>Next Action</label><input class="fc" id="fna" value="${esc(p.nextAction||'')}" placeholder="Call back, Site visit, Send proposal..."></div>
+      <div class="fg"><label>Est. Close Date</label><input type="date" class="fc" id="fclose" value="${p.closeDate||''}"></div>
+      <div class="fg"><label>Notes</label><textarea class="fc" id="fno">${esc(p.notes||'')}</textarea></div>
+
+```
+</div>
+<div class="mft"><button class="btn bs" onclick="closeM()">Cancel</button>
+  <button class="btn bp" onclick="${p.id?`updLead(${p.id})`:'saveLead()'}">${p.id?'Save Changes':'Add Lead'}</button></div>`);
+```
+
+}
+
+function saveLead(){
+const name=v(‘fn’),addr=v(‘fa’);
+if(!name||!addr){toast(‘Name and address are required’);return;}
+const l={id:DB.nid++,name,addr,phone:v(‘fp’),email:v(‘fe’),stage:v(‘fst’),goal:v(‘fg2’),
+type:v(‘ft’),beds:v(‘fb’),sqft:v(‘fsq’),value:parseFloat(v(‘fv’))||0,
+source:v(‘fsc’),financing:v(‘ffi’),nextAction:v(‘fna’),nextDate:v(‘fnd’),
+notes:v(‘fno’),temp:v(‘ftemp’)||‘warm’,closeDate:v(‘fclose’)||’’,created:td(),updated:td()};
+DB.leads.push(l);
+logAct(`New lead: ${name} — ${addr.split(',')[0]} (${SM[l.stage]?.lbl||l.stage})`,l.id);
+saveAndSync();closeM();toast(name+’ added ✓’);
+}
+
+function editLead(id){openAddLead(DB.leads.find(x=>x.id===id));}
+
+function updLead(id){
+const l=DB.leads.find(x=>x.id===id);
+const prev=l.stage;
+Object.assign(l,{name:v(‘fn’),addr:v(‘fa’),phone:v(‘fp’),email:v(‘fe’),stage:v(‘fst’),goal:v(‘fg2’),
+type:v(‘ft’),beds:v(‘fb’),sqft:v(‘fsq’),value:parseFloat(v(‘fv’))||0,
+source:v(‘fsc’),financing:v(‘ffi’),nextAction:v(‘fna’),nextDate:v(‘fnd’),
+notes:v(‘fno’),temp:v(‘ftemp’)||‘warm’,closeDate:v(‘fclose’)||’’,updated:td()});
+if(prev!==l.stage)logAct(`${l.name}: ${SM[prev]?.lbl||prev} → ${SM[l.stage]?.lbl||l.stage}`,id);
+else logAct(`${l.name} — info updated`,id);
+saveAndSync();closeM();toast(‘Lead updated ✓’);
+}
+
+function moveStage(id){
+const l=DB.leads.find(x=>x.id===id);
+openM(`<div class="moh"><span class="mot">Move Stage — ${l.name}</span><button class="mox" onclick="closeM()">✕</button></div> <div class="mbd"> <div class="fg"><label>New Stage</label><select class="fc" id="ms">${STAGES.map(s=>`<option value=”${s.id}” ${s.id===l.stage?‘selected’:’’}>${s.lbl}</option>`).join('')}</select></div> <div class="fg"><label>Next Action</label><input class="fc" id="ma" value="${esc(l.nextAction||'')}"></div> <div class="fg"><label>Next Action Date</label><input type="date" class="fc" id="md" value="${l.nextDate||''}"></div> <div class="fg"><label>Note to log (optional)</label><input class="fc" id="mn" placeholder="e.g. Called — left voicemail, Site visit confirmed..."></div> </div> <div class="mft"><button class="btn bs" onclick="closeM()">Cancel</button><button class="btn bp" onclick="confStage(${id})">Update Stage</button></div>`);
+}
+function confStage(id){
+const l=DB.leads.find(x=>x.id===id);const prev=SM[l.stage]?.lbl||l.stage;
+l.stage=v(‘ms’);l.nextAction=v(‘ma’);l.nextDate=v(‘md’);l.updated=td();
+const note=v(‘mn’);
+if(note){l.notes=(l.notes?l.notes+’\n\n’:’’)+`[${new Date().toLocaleDateString()}] ${note}`;}
+if(!l.stageHistory)l.stageHistory=[];
+l.stageHistory.push({from:prev,to:SM[l.stage]?.lbl||l.stage,date:td(),note:note||’’});
+logAct(`${l.name}: ${prev} → ${SM[l.stage]?.lbl||l.stage}${note?' — '+note:''}`,id);
+saveAndSync();closeM();toast(‘Stage updated ✓’);
+}
+
+// ─── AUTO-GENERATE PAYMENT SCHEDULE ─────────────────
+// Creates the standard RC 10-milestone schedule for a given contract value
+// All payments collected BEFORE each phase begins
+function generatePaymentSchedule(leadId, contractValue) {
+const cv = parseFloat(contractValue) || 0;
+const l = DB.leads.find(x => x.id === leadId);
+if (!l || !cv) { toast(‘Set a contract value on this lead first’); return; }
+
+// Ask confirmation if payments already exist
+const existing = DB.payments.filter(p => p.leadId === leadId);
+if (existing.length > 0) {
+if (!confirm(`This will REPLACE the ${existing.length} existing milestone(s) with the standard 10-payment schedule. Continue?`)) return;
+DB.payments = DB.payments.filter(p => p.leadId !== leadId);
+}
+
+// Standard RC 10-milestone schedule
+// Collect BEFORE each phase — never after
+const pct = [0, 0.15, 0.12, 0.12, 0.12, 0.10, 0.10, 0.10, 0.10, 0];
+const flat_deposit = 1000;
+
+// Calculate amounts (% of contract, rounded to nearest $50)
+const r50 = n => Math.round(n / 50) * 50;
+const p1  = flat_deposit;
+const p2  = r50(cv * 0.15);
+const p3  = r50(cv * 0.12);
+const p4  = r50(cv * 0.12);
+const p5  = r50(cv * 0.12);
+const p6  = r50(cv * 0.10);
+const p7  = r50(cv * 0.10);
+const p8  = r50(cv * 0.10);
+const p9  = r50(cv * 0.10);
+const p10 = cv - (p1 + p2 + p3 + p4 + p5 + p6 + p7 + p8 + p9); // remainder
+
+const milestones = [
+{ rfp: ‘RFP-001’, label: ‘Deposit Upon Signing’,                    amount: p1,  pct: 0,  note: ‘$1,000 flat — secures your contract slot’ },
+{ rfp: ‘RFP-002’, label: ‘15% Pre-Construction & Materials Deposit’, amount: p2,  pct: 15, note: ‘Due before design/plans begin — triggers start of work’ },
+{ rfp: ‘RFP-003’, label: ‘Foundation & Site Preparation’,           amount: p3,  pct: 12, note: ‘Due before foundation starts — excavation, rebar, concrete’ },
+{ rfp: ‘RFP-004’, label: ‘Framing & Roofing’,                       amount: p4,  pct: 12, note: ‘Due before framing crew mobilizes — lumber, hardware, roofing’ },
+{ rfp: ‘RFP-005’, label: ‘Rough MEP — Electrical, Plumbing & HVAC’, amount: p5,  pct: 12, note: ‘Due before rough-in begins — all mechanical rough work’ },
+{ rfp: ‘RFP-006’, label: ‘Exterior, Insulation & Waterproofing’,    amount: p6,  pct: 10, note: ‘Due before exterior work — stucco, insulation, waterproofing’ },
+{ rfp: ‘RFP-007’, label: ‘Drywall & Interior Prep’,                 amount: p7,  pct: 10, note: ‘Due before drywall — after all rough inspections passed’ },
+{ rfp: ‘RFP-008’, label: ‘Finish Work — Flooring, Tile & Cabinetry’,amount: p8,  pct: 10, note: ‘Due before finish phase — cabinets, countertops, flooring, tile’ },
+{ rfp: ‘RFP-009’, label: ‘Final Fixtures, Electrical & Paint’,      amount: p9,  pct: 10, note: ‘Due before final phase — plumbing fixtures, electrical, paint’ },
+{ rfp: ‘RFP-010’, label: ‘Final Completion — Inspection & Walkthrough’, amount: p10, pct: 0, note: ‘Due after final inspection passed + client walkthrough complete’ },
+];
+
+const baseRfpNum = DB.nid;
+milestones.forEach((m, i) => {
+DB.payments.push({
+id: DB.nid++,
+leadId,
+label: m.label,
+pct: m.pct,
+amount: m.amount,
+rfp: m.rfp,
+date: ‘’,
+paidDate: ‘’,
+status: i === 0 ? ‘due’ : ‘pending’, // first one is immediately due
+method: ‘’,
+note: m.note,
+});
+});
+
+// Mark first payment as due
+logAct(`Payment schedule generated for ${l.name} — 10 milestones, contract $${cv.toLocaleString()}`, leadId);
+saveAndSync();
+toast(‘10-milestone payment schedule created ✓’);
+}
+
+// ─── PAYMENTS ─────────────────────────────────────────
+function openAddPayment(lid){
+openM(`<div class="moh"><span class="mot">Add Payment Milestone</span><button class="mox" onclick="closeM()">✕</button></div> <div class="mbd"> <div class="fg"><label>Client *</label><select class="fc" id="pl"> <option value="">— Select client —</option> ${DB.leads.map(l=>`<option value=”${l.id}” ${l.id===lid?‘selected’:’’}>${l.name} — ${l.addr.split(’,’)[0]}</option>`).join('')} </select></div> <div class="fg"><label>Milestone Label *</label><input class="fc" id="plb" placeholder="e.g. Deposit (10%), 3rd Milestone — Framing Complete"></div> <div class="fr3"> <div class="fg"><label>% of Contract</label><input class="fc" id="ppc" type="number" placeholder="10" min="0" max="100"></div> <div class="fg"><label>Amount ($) *</label><input class="fc" id="pam" type="number" placeholder="21500"></div> <div class="fg"><label>Invoice # (RFP)</label><input class="fc" id="prfp" placeholder="RFP-001"></div> </div> <div class="fr"> <div class="fg"><label>Due Date</label><input type="date" class="fc" id="pdt"></div> <div class="fg"><label>Status</label> <select class="fc" id="pst"> <option value="pending">Pending — Not yet invoiced</option> <option value="due">Due — Invoice sent</option> <option value="paid">Paid — Already received</option> </select> </div> </div> <div class="fr"> <div class="fg"><label>Payment Method (if paid)</label> <select class="fc" id="pmt2"><option value=""></option><option>Check</option><option>Zelle</option><option>Wire Transfer</option><option>Cash</option><option>Credit Card (Stripe)</option></select> </div> <div class="fg"><label>Paid Date (if paid)</label><input type="date" class="fc" id="ppd"></div> </div> <div class="fg"><label>Internal Note (check #, ref, etc.)</label><input class="fc" id="pnote" placeholder="Optional — e.g. Check #4421"></div> </div> <div class="mft"><button class="btn bs" onclick="closeM()">Cancel</button><button class="btn bp" onclick="savePmt()">Save Milestone</button></div>`);
+}
+
+function savePmt(){
+const lid=parseInt(v(‘pl’));const lbl=v(‘plb’);const amt=parseFloat(v(‘pam’));
+if(!lid||!lbl||!amt){toast(‘Client, label and amount required’);return;}
+const status=v(‘pst’);
+DB.payments.push({id:DB.nid++,leadId:lid,label:lbl,pct:parseFloat(v(‘ppc’))||0,
+amount:amt,rfp:v(‘prfp’),date:v(‘pdt’),status,
+method:v(‘pmt2’),paidDate:status===‘paid’?(v(‘ppd’)||td()):’’,note:v(‘pnote’)});
+const l=DB.leads.find(x=>x.id===lid);
+logAct(`${l?.name}: payment milestone added — "${lbl}" $${amt.toLocaleString()}`,lid);
+saveAndSync();closeM();toast(‘Milestone saved ✓’);
+}
+
+function quickPaid(id){
+const p=DB.payments.find(x=>x.id===id);if(!p)return;
+const l=DB.leads.find(x=>x.id===p.leadId);
+openM(`<div class="moh"><span class="mot">✓ Mark Payment Received</span><button class="mox" onclick="closeM()">✕</button></div> <div class="mbd"> <div style="background:var(--glt);border:1px solid #b8e0c0;border-radius:var(--r);padding:1rem;margin-bottom:1rem"> <div style="font-size:1.1rem;font-weight:700;color:var(--grn);margin-bottom:.25rem">$${p.amount.toLocaleString()}</div> <div style="font-size:.85rem;color:var(--ink2)">${p.label}</div> ${l?`<div style="font-size:.78rem;color:var(--mut);margin-top:.15rem">${l.name} · ${l.addr.split(’,’)[0]}</div>`:''} </div> <div class="fr"> <div class="fg"><label>Payment Method *</label> <select class="fc" id="qm"><option>Check</option><option>Zelle</option><option>Wire Transfer</option><option>Cash</option><option>Credit Card (Stripe)</option></select> </div> <div class="fg"><label>Date Received</label><input type="date" class="fc" id="qd" value="${td()}"></div> </div> <div class="fg"><label>Check # or Reference # (optional)</label><input class="fc" id="qr" placeholder="e.g. Check #4421"></div> </div> <div class="mft"><button class="btn bs" onclick="closeM()">Cancel</button><button class="btn bg" onclick="confPaid(${id})">✓ Confirm Received</button></div>`);
+}
+function confPaid(id){
+const p=DB.payments.find(x=>x.id===id);
+p.status=‘paid’;p.method=v(‘qm’);p.paidDate=v(‘qd’);p.note=(v(‘qr’)?v(‘qr’):p.note)||’’;
+const l=DB.leads.find(x=>x.id===p.leadId);
+logAct(`💰 Payment received: ${l?.name||'Client'} — "${p.label}" $${p.amount.toLocaleString()} via ${p.method}`,p.leadId);
+saveAndSync();closeM();toast(`$${p.amount.toLocaleString()} marked received ✓`);
+}
+
+// ─── EXPENSES ─────────────────────────────────────────
+function openAddExpense(lid){
+openM(`<div class="moh"><span class="mot">Add Project Expense</span><button class="mox" onclick="closeM()">✕</button></div> <div class="mbd"> <div class="fg"><label>Project *</label><select class="fc" id="el"> <option value="">— Select project —</option> ${DB.leads.filter(l=>!['lost'].includes(l.stage)).map(l=>`<option value=”${l.id}” ${l.id===lid?‘selected’:’’}>${l.name} — ${l.addr.split(’,’)[0]}</option>`).join('')} </select></div> <div class="fr"> <div class="fg"><label>Category *</label><select class="fc" id="ec">${ECATS.map(c=>`<option>${c}</option>`).join('')}</select></div> <div class="fg"><label>Amount ($) *</label><input class="fc" id="ea" type="number" placeholder="5000"></div> </div> <div class="fg"><label>Description *</label><input class="fc" id="elb" placeholder="e.g. Framing crew — weeks 1-2"></div> <div class="fr"> <div class="fg"><label>Vendor / Payable To</label><input class="fc" id="ev" placeholder="Home Depot, Elite Electric..."></div> <div class="fg"><label>Date</label><input type="date" class="fc" id="ed" value="${td()}"></div> </div> </div> <div class="mft"><button class="btn bs" onclick="closeM()">Cancel</button><button class="btn bp" onclick="saveExp()">Save Expense</button></div>`);
+}
+function saveExp(){
+const lid=parseInt(v(‘el’));const lbl=v(‘elb’);const amt=parseFloat(v(‘ea’));
+if(!lid||!lbl||!amt){toast(‘Project, description and amount required’);return;}
+DB.expenses.push({id:DB.nid++,leadId:lid,category:v(‘ec’),label:lbl,amount:amt,vendor:v(‘ev’),date:v(‘ed’),note:’’});
+const l=DB.leads.find(x=>x.id===lid);
+logAct(`Expense: ${l?.name} — "${lbl}" $${amt.toLocaleString()} (${v('ec')})`,lid);
+saveAndSync();closeM();toast(‘Expense saved ✓’);
+}
+
+// ─── FINANCE TAB ──────────────────────────────────────
+function renderFin(){
+// Update project dropdown
+const sel=g(‘fProj’);
+if(sel){
+const cur=sel.value;
+sel.innerHTML=`<option value="">All Projects</option>`+
+DB.leads.filter(l=>![‘lost’].includes(l.stage))
+.map(l=>`<option value="${l.id}">${l.name}</option>`).join(’’);
+if(cur)sel.value=cur;
+}
+
+const allC=DB.leads.reduce((s,l)=>s+(l.value||0),0);
+const allPaid=DB.payments.filter(p=>p.status===‘paid’).reduce((s,p)=>s+p.amount,0);
+const allDue=DB.payments.filter(p=>p.status===‘due’).reduce((s,p)=>s+p.amount,0);
+const allExp=DB.expenses.reduce((s,e)=>s+e.amount,0);
+
+g(‘fStats’).innerHTML=` <div class="sc"><div class="sv">$${fmt(allC)}</div><div class="sl">Total Contracts</div></div> <div class="sc green"><div class="sv" style="color:var(--grn)">$${fmt(allPaid)}</div><div class="sl">Collected</div></div> <div class="sc orange"><div class="sv" style="color:var(--org)">$${fmt(allDue)}</div><div class="sl">Due Now</div></div> <div class="sc"><div class="sv" style="color:var(--red)">$${fmt(allExp)}</div><div class="sl">Expenses</div></div>`;
+
+// Stripe banner
+g(‘fStripeBanner’).innerHTML=DB.settings.stripeLink?’’:` <div class="stripe-notice">💳 <strong>Accept online payments:</strong> Add a Stripe payment link in Settings (⚙️) to let clients pay invoices by card or bank transfer. <button class="btn bxs bs" style="margin-left:.5rem" onclick="openSettings()">Configure →</button></div>`;
+
+const lid=sel?parseInt(sel.value)||null:null;
+
+// Project summary
+const sumEl=g(‘fSumm’);
+if(lid){
+const l=DB.leads.find(x=>x.id===lid);
+const pmts=DB.payments.filter(p=>p.leadId===lid);
+const exps=DB.expenses.filter(e=>e.leadId===lid);
+const paid=pmts.filter(p=>p.status===‘paid’).reduce((s,p)=>s+p.amount,0);
+const due=pmts.filter(p=>p.status===‘due’).reduce((s,p)=>s+p.amount,0);
+const pending=pmts.filter(p=>p.status===‘pending’).reduce((s,p)=>s+p.amount,0);
+const totExp=exps.reduce((s,e)=>s+e.amount,0);
+const profit=(l.value||0)-totExp;
+const margin=l.value&&l.value>0?Math.round(profit/l.value*100):0;
+const pct=l.value&&l.value>0?Math.min(100,Math.round(paid/l.value*100)):0;
+sumEl.innerHTML=` <div class="ig" style="margin-bottom:.85rem"> <div class="ii"><div class="il">Contract Value</div><div class="iv">$${fmt(l.value||0)}</div></div> <div class="ii"><div class="il">Collected</div><div class="iv" style="color:var(--grn)">$${fmt(paid)}</div></div> <div class="ii"><div class="il">Currently Due</div><div class="iv" style="color:${due?'var(--org)':'var(--grn)'}">$${fmt(due)}</div></div> <div class="ii"><div class="il">Upcoming</div><div class="iv" style="color:var(--mut)">$${fmt(pending)}</div></div> <div class="ii"><div class="il">Remaining Balance</div><div class="iv">$${fmt((l.value||0)-paid)}</div></div> <div class="ii"><div class="il">Total Expenses</div><div class="iv" style="color:var(--org)">$${fmt(totExp)}</div></div> <div class="ii"><div class="il">Est. Profit</div><div class="iv" style="color:${profit>=0?'var(--grn)':'var(--red)'}">$${fmt(profit)}</div></div> <div class="ii"><div class="il">Profit Margin</div><div class="iv" style="color:${profit>=0?'var(--grn)':'var(--red)'}">${margin}%</div></div> </div> <div class="prog-label"><span>Collection: ${pct}%</span><span>$${fmt(paid)} of $${fmt(l.value||0)}</span></div> <div class="prog-wrap"><div class="prog-fill" style="width:${pct}%"></div></div>`;
+} else {
+const active=DB.leads.filter(l=>![‘lost’,‘new’].includes(l.stage));
+sumEl.innerHTML=active.length?active.map(l=>{
+const pmts=DB.payments.filter(p=>p.leadId===l.id);
+const paid=pmts.filter(p=>p.status===‘paid’).reduce((s,p)=>s+p.amount,0);
+const pct=l.value&&l.value>0?Math.min(100,Math.round(paid/l.value*100)):0;
+const due=pmts.filter(p=>p.status===‘due’).length;
+return `<div style="margin-bottom:.95rem"> <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.35rem"> <span style="font-size:.85rem;font-weight:600;cursor:pointer;color:var(--red)" onclick="openLead(${l.id})">${l.name}</span> <div style="display:flex;align-items:center;gap:.5rem"> ${due?`<span class="bdg bdg-orange">${due} due</span>`:''} <span style="font-size:.75rem;color:var(--grn);font-weight:500">$${fmt(paid)} / $${fmt(l.value||0)}</span> </div> </div> <div class="prog-wrap"><div class="prog-fill" style="width:${pct}%"></div></div> <div style="font-size:.67rem;color:var(--mut);margin-top:.25rem">${pct}% collected · ${SM[l.stage]?.lbl||l.stage}</div> </div>`;
+}).join(’’):’<div class="empty"><div class="empty-txt">No active projects</div></div>’;
+}
+
+// Payment schedule — full milestone cards
+const pmtsAll=lid?DB.payments.filter(p=>p.leadId===lid):DB.payments;
+const today=td();
+const pmtSorted=[…pmtsAll].sort((a,b)=>{
+const o={due:0,paid:1,pending:2};return(o[a.status]??3)-(o[b.status]??3);
+});
+const fPay=g(‘fPay’);
+if(!pmtSorted.length){fPay.innerHTML=’<div class="cb"><div class="empty"><div class="empty-ico">💵</div><div class="empty-txt">No payment milestones yet</div></div></div>’;return;}
+fPay.innerHTML=’<div class="cb" style="padding:.75rem">’+pmtSorted.map(p=>{
+const l=DB.leads.find(x=>x.id===p.leadId);
+const isOD=p.status===‘due’&&p.date&&p.date<today;
+const cls=p.status===‘paid’?‘paid’:isOD?‘overdue’:p.status===‘due’?‘due’:‘pending’;
+const dotCls=p.status===‘paid’?‘dp’:isOD?‘dlt’:p.status===‘due’?‘ddu’:‘dpnd’;
+return `<div class="pmcard ${cls}" style="margin-bottom:.5rem"> <div class="pmcard-top"> <div class="pmcard-status ${dotCls}"></div> <div class="pmcard-info"> <div class="pmcard-label">${p.label}${p.pct?` <span style="font-size:.7rem;color:var(--mut);font-weight:400">(${p.pct}%)</span>`:''}</div> <div class="pmcard-meta"> ${l?`<span style="font-weight:500;color:var(--ink2)">${l.name}</span>`:''} ${p.rfp?` · <span>${p.rfp}</span>`:''} ${p.date&&p.status!=='paid'?` · <span style="color:${isOD?'var(--red)':'inherit'}">Due ${fmtDate(p.date)}${isOD?’ ⚠️’:’’}</span>`:''} ${p.status==='paid'?` · <span style="color:var(--grn)">Paid ${fmtDate(p.paidDate)}${p.method?’ via ‘+p.method:’’}</span>`:''} ${p.note?` · <span style="color:var(--mut)">${p.note}</span>`:''} </div> </div> <div class="pmcard-right"> <div class="pmcard-amount" style="color:${p.status==='paid'?'var(--grn)':isOD?'var(--red)':p.status==='due'?'var(--org)':'var(--mut)'}">$${p.amount.toLocaleString()}</div> ${p.status==='paid'?`<span class="bdg bdg-green">✓ Paid</span>`:`<span class="bdg ${cls==='overdue'?'bdg-red':cls==='due'?'bdg-orange':'bdg-gray'}">${cls===‘overdue’?‘Overdue’:cls===‘due’?‘Due’:‘Pending’}</span>`} </div> </div> ${p.status!=='paid'?`
+<div class="pmcard-actions">
+${p.status===‘due’?`<button class="btn bxs bg" onclick="quickPaid(${p.id})">✓ Mark Paid</button>`:’’}
+${p.status===‘pending’?`<button class="btn bxs bo" onclick="markDue(${p.id})">Mark as Due</button>`:’’}
+<button class="btn bxs bs" onclick="genInvoiceFor(${p.id},${p.leadId})">📄 RFP</button>
+</div>`:'' } </div>`;
+}).join(’’)+’</div>’;
+
+// Expenses
+const expAll=lid?DB.expenses.filter(e=>e.leadId===lid):DB.expenses;
+g(‘fExp’).innerHTML=expAll.length?[…expAll].sort((a,b)=>(b.date||’’).localeCompare(a.date||’’)).map(e=>{
+const l=DB.leads.find(x=>x.id===e.leadId);
+const cls=ECLS[e.category.toLowerCase().split(’ ‘)[0]]||‘eother’;
+return `<div class="row ${cls}" style="padding-left:.6rem"> <div class="ri"><div class="rl">${e.label}</div><div class="rsb">${l?l.name+' · ':''} ${e.category}${e.vendor?' · '+e.vendor:''}${e.date?' · '+e.date:''}</div></div> <div class="rr"><span class="ram" style="color:var(--ink2)">$${e.amount.toLocaleString()}</span> <button class="btn bxs bdr" onclick="delExp(${e.id})">✕</button> </div> </div>`;
+}).join(’’):’<div class="empty"><div class="empty-ico">🧾</div><div class="empty-txt">No expenses logged yet</div></div>’;
+}
+
+function delExp(id){
+if(!confirm(‘Delete this expense?’))return;
+DB.expenses=DB.expenses.filter(e=>e.id!==id);
+logAct(‘Expense deleted’);saveAndSync();toast(‘Deleted’);
+}
+
+// ─── ACTIVITY LOG ─────────────────────────────────────
+function renderLog(){
+const el=g(‘logList’);if(!el)return;
+el.innerHTML=DB.log.length?DB.log.map(a=>` <div class="ait"> <div class="aitdot"></div> <div class="aitmsg">${a.msg}${a.leadId?` <span style="color:var(--red);cursor:pointer;font-size:.72rem" onclick="openLead(${a.leadId})">[open →]</span>`:''}</div> <div class="aittm">${timeAgo(a.time)}</div> </div>`).join(’’)
+:’<div class="empty"><div class="empty-txt">No activity yet</div></div>’;
+}
+
+// ─── DOCUMENT GENERATOR ───────────────────────────────
+function openDocGen(type,prelid,prefillPmt){
+const lid=prelid||null;
+const labels={proposal:‘ADU Proposal’,rfp:‘Request for Payment’,changeorder:‘Change Order’};
+const defaultRfpItems=prefillPmt?`${prefillPmt.label} — $${prefillPmt.amount.toLocaleString()}`:’’;
+const defaultRfpAmt=prefillPmt?prefillPmt.amount:’’;
+const defaultRfpNum=prefillPmt?.rfp||’’;
+
+openM(` <div class="moh"><span class="mot">Generate ${labels[type]}</span><button class="mox" onclick="closeM()">✕</button></div> <div class="mbd"> <div class="fg"><label>Client *</label> <select class="fc" id="dgl" onchange="afill('${type}')"> <option value="">— Select client —</option> ${DB.leads.map(l=>`<option value=”${l.id}” ${l.id===lid?‘selected’:’’}>${l.name} — ${l.addr.split(’,’)[0]}</option>`).join('')} </select> </div> ${type==='proposal'?`
+<div class="fr">
+<div class="fg"><label>Sqft</label><input class="fc" id="dgsq" placeholder="600"></div>
+<div class="fg"><label>Bed / Bath</label><input class="fc" id="dgb" placeholder="1 bed / 1 bath"></div>
+</div>
+<div class="fr">
+<div class="fg"><label>ADU Type</label><select class="fc" id="dgt"><option>Detached</option><option>Attached</option><option>Garage Conversion</option><option>JADU</option></select></div>
+<div class="fg"><label>Contract Value ($)</label><input class="fc" id="dgv" type="number" placeholder="185000"></div>
+</div>
+<div class="fg"><label>Special Scope / Notes</label><textarea class="fc" id="dgn" placeholder="Extra scope, special conditions, exclusions..."></textarea></div>
+`:type==='rfp'?`
+<div class="fr">
+<div class="fg"><label>Invoice / RFP #</label><input class="fc" id="dgr" value="${esc(defaultRfpNum)}" placeholder="RFP-001"></div>
+<div class="fg"><label>Total Amount Due ($)</label><input class="fc" id="dga" type="number" value="${defaultRfpAmt}" placeholder="21500"></div>
+</div>
+<div class="fg"><label>Line Items</label><textarea class="fc" id="dgd" placeholder="2nd Payment - Start Prepping and Forming — $5,950&#10;Remaining CO #101 — $1,500">${esc(defaultRfpItems)}</textarea></div>
+<div class="fg"><label>Terms</label><input class="fc" id="dgte" value="Due on Receipt — within 48 hours"></div>
+${DB.settings.stripeLink?`<div style="background:#EEF2FF;border:1px solid #C7D2FE;border-radius:var(--r2);padding:.65rem .85rem;font-size:.79rem;margin-top:.25rem">💳 <strong>Payment link will be included:</strong> ${DB.settings.stripeLink}</div>`:``}
+`:`
+<div class="fr">
+<div class="fg"><label>Change Order #</label><input class="fc" id="dgco" placeholder="CO-103"></div>
+<div class="fg"><label>Amount ($)</label><input class="fc" id="dgca" type="number" placeholder="7500"></div>
+</div>
+<div class="fg"><label>Scope of Additional Work</label><textarea class="fc" id="dgcd" placeholder="Describe all additional work, materials, and labor..."></textarea></div>
+`}
+<div id="dgo" style="display:none;margin-top:1rem">
+<div style="font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--mut);margin-bottom:.5rem">Document Preview</div>
+<div class="ao" id="dgtxt"></div>
+</div>
+</div>
+<div class="mft">
+<button class="btn bs" onclick="closeM()">Cancel</button>
+<button class="btn bdk" id="dgbtn" onclick="genDoc('${type}')">🤖 Generate with AI</button>
+<button class="btn bp" id="dgebtn" style="display:none" onclick="sendDocEmail('${type}')">📧 Send Email</button>
+</div>`);
+if(lid)setTimeout(()=>afill(type),60);
+}
+
+function afill(type){
+const lid=parseInt(v(‘dgl’));if(!lid)return;
+const l=DB.leads.find(x=>x.id===lid);if(!l)return;
+if(type===‘proposal’){
+if(g(‘dgsq’))g(‘dgsq’).value=l.sqft||’’;
+if(g(‘dgb’))g(‘dgb’).value=l.beds?(l.beds+’ bed / 1 bath’):’’;
+if(g(‘dgv’))g(‘dgv’).value=l.value||’’;
+if(g(‘dgt’)){const s=g(‘dgt’);[…s.options].forEach(o=>o.selected=(o.value===l.type));}
+}
+}
+
+async function genDoc(type){
+const lid=parseInt(v(‘dgl’));
+if(!lid){toast(‘Please select a client first’);return;}
+const l=DB.leads.find(x=>x.id===lid);
+const btn=g(‘dgbtn’);btn.disabled=true;btn.textContent=‘Generating…’;
+g(‘dgo’).style.display=‘block’;
+g(‘dgtxt’).innerHTML=’<div class="ald"><div class="sp"></div>AI is writing your document — this takes about 15 seconds…</div>’;
+const dt=new Date().toLocaleDateString(‘en-US’,{month:‘long’,day:‘numeric’,year:‘numeric’});
+const payLink=DB.settings.stripeLink?`\n\nONLINE PAYMENT LINK: ${DB.settings.stripeLink}`:’’;
+let prompt=’’;
+
+if(type===‘proposal’){
+prompt=`Generate a complete, professional ADU construction proposal for RC Remodeling & Construction.
+
+COMPANY: RC Remodeling & Construction | CSLB #1109721 | (818) 633-1025 | RCremodelingconstruction.com
+DATE: ${dt} | “PLEASE MAKE ALL CHECKS PAYABLE TO: RC Remodeling & Construction”
+
+CLIENT: ${l.name} | ${l.addr} | ${l.phone||’***’} | ${l.email||’***’}
+PROJECT: ${v(‘dgt’)} ADU | ${v(‘dgsq’)} sqft | ${v(‘dgb’)} | Contract: $${parseFloat(v(‘dgv’)||0).toLocaleString()}
+NOTES: ${v(‘dgn’)||‘Standard full scope’}
+
+Write ALL sections exactly as shown:
+
+1. HEADER — Company info, client info, CSLB license, date
+1. DESCRIPTION OF PROJECT — RC Remodeling & Construction Contractors Company, Fully Licensed Bonded and Insured (CSLB #1109721), contracted to supply labor, supervision, and equipment for the property at [address] per work described.
+1. PRE-CONSTRUCTION GENERAL NOTES (a-f):
+   a) Copies of CA Contractor License, Workers Comp, General Liability, OSHA cert
+   b) Construction starts after Owner obtains approved plans/permits — Owner pays ALL city/permit fees
+   c) Contractor provides one complete signed contract copy before commencing
+   d) Communication via email, phone, and weekly meeting
+   e) Contractor provides Request for Payments, Lien Releases, Receipts per payment schedule
+   f) Work within approved city construction hours, minimize neighborhood disturbance
+
+**** Any significant change in construction material/labor index may incur additional charges ****
+**** Any changes in plans or on-site requests will incur additional costs. Price good for 7 days ****
+
+1. SITE PREPARATION:
+1. GC supplies toilets as needed
+1. Owner provides water and power
+1. Owner pays all permits, soils engineering, architectural/structural engineering, surveyor, lab testing
+1. Excluded: soil testing, tree removal, contaminated soil, excavation over 5ft OSHA requiring shoring
+1. Owner provides site access for trucks and equipment
+1. SCOPE OF WORK — ${v(‘dgsq’)} SQFT ${v(‘dgt’)} ADU:
+   I. PRE-CONSTRUCTION (Plans and Permits)
+   A. Plans: Design ${v(‘dgb’)}, complete Architectural and Structural set (WFPP), city submission, address corrections, obtain permit
+
+II. CONSTRUCTION:
+A. Foundation — excavate per plan, rebar, slab on grade, anchor bolts, wood forming, plastic membrane, concrete, debris removal
+B. Framing — hardware, stud walls, plates, posts, headers, ceiling joists, roof rafters, ridge, shear walls, blocking, roof sheathing, debris
+C. Roofing — waterproofing, roof material, 2x fascia board, ventilation per plans
+D. Windows & Doors — waterproofing, windows $350/unit, exterior doors $300/unit, French doors $400/unit, interior hinge $150/unit, bi-fold $100/unit, doorknobs $25/unit
+E. Rough Electrical — new sub-panel from main, rough wiring throughout, water heater/HVAC/lighting/exhaust accommodations
+F. Rough Plumbing — break/repair concrete as needed, trenches, PEX water line, ABS drainage, gas line, bathroom/kitchen/laundry rough, tankless water heater rough
+G. HVAC — ductless mini-split $1,850/unit, outdoor condenser, condenser pad, indoor wall unit, communications and condensation lines
+H. Exterior Facade — scaffolding, waterproof barrier, exterior lath, drip metal, stucco to match existing, cover openings
+I. Insulation — R-15 walls, R-30 ceiling
+J. Drywall — 5/8” throughout, 5/8” type X wet areas, firewall per plan, screws, tape, top, sand
+K. Cabinetry — prefab kitchen cabinets $300/LF upper and lower; bathroom vanity with bowl/countertop/backsplash $350/unit
+L. Stone Countertop — prefab quartz 108”x26” with 6” backsplash $350/unit, cut plumbing holes
+M. Base Trim — base molding $1.50/LF, door trims $1.50/LF
+N. Flooring & Tile — hot mop shower pan, cement board prep, flooring $3.50/sqft, shower wall tile 120sqft $3.50/sqft, shower pan tile $3.50/sqft
+O. Paint — all interior walls/ceilings/moldings, primer, 2 coats owner’s choice max 3 colors, cover windows/doors/floors
+P. Appliances — install all accommodations during rough phases; owner provides appliances
+Q. Finished Plumbing — kitchen sink $150, faucet $100, bathroom faucet/drains $80/unit, toilet $150/unit, shower valve/head $100/unit, drain cover $30/unit, tankless water heater $1,200/unit, garbage disposal $150/unit
+R. Finished Electrical — smoke/CO detectors $20/unit, switches $5/unit, AFCI $5/unit, GFCI $10/unit, recessed lights $20/unit, exterior lights $30/unit, vanity lights $50/unit, exhaust fans $75/unit
+
+1. EXCLUSIONS: Existing Electrical/Gas/Water Line Upgrades, Meter Separation, Solar Panels, Low Impact Development
+1. ADDITIONAL NOTES — include: “Per Plans” definition, 25% profit/overhead markup + 5% contingency for extras, 40hr/5-day work week, bank/bridge funds clause, mediation then mandatory arbitration, photos for marketing (address/info protected), allowance definition
+1. PROJECT SCHEDULE: 75 – 95 Working Days
+1. PAYMENT SCHEDULE — RC Standard 10-Milestone Structure (collect BEFORE each phase):
+   RFP-001: $1,000 Deposit Upon Signing (flat, due immediately)
+   RFP-002: 15% Pre-Construction & Materials Deposit (before plans/design begin)
+   RFP-003: 12% Foundation & Site Preparation (before foundation starts)
+   RFP-004: 12% Framing & Roofing (before framing crew mobilizes)
+   RFP-005: 12% Rough MEP — Electrical, Plumbing & HVAC (before rough-in)
+   RFP-006: 10% Exterior, Insulation & Waterproofing (before exterior work)
+   RFP-007: 10% Drywall & Interior Prep (after rough inspections pass)
+   RFP-008: 10% Finish Work — Flooring, Tile & Cabinetry (before finish phase)
+   RFP-009: 10% Final Fixtures, Electrical & Paint (before final phase)
+   RFP-010: Remainder% Final Completion — Inspection & Walkthrough (after final inspection passed)
+   Grand Total: $${parseFloat(v(‘dgv’)||0).toLocaleString()}
+   Note: Each payment is due 48 hours before the corresponding phase begins. Owner must pay to unlock the next phase of work.
+1. SIGNATURE BLOCKS:
+   x___________________________________________ Date: ***/***/________
+   “Owner” ___________________
+
+x___________________________________________  Date: ***/***/________
+“General Contractor” RC Remodeling & Construction
+
+PLEASE MAKE ALL CHECKS PAYABLE TO: RC Remodeling & Construction`;
+
+} else if(type===‘rfp’){
+prompt=`Generate a professional Request for Payment (Invoice) for RC Remodeling & Construction.
+
+RC REMODELING & CONSTRUCTION | CSLB #1109721 | (818) 633-1025 | RCremodelingconstruction.com
+
+TO: ${l.name}
+Project Address: ${l.addr}
+Billing Address: ${l.addr}
+Customer Number: ${(l.addr.match(/\d+/)||[‘RC’])[0]}-${new Date().getFullYear()}
+
+DATE: ${dt}
+Produced By: Ron Cohen
+Invoice / RFP #: ${v(‘dgr’)||’___’}
+Terms: ${v(‘dgte’)||‘Due on Receipt — within 48 hours’}
+
+STATUS | DESCRIPTION | AMOUNT
+DUE | ${v(‘dgd’)||‘Payment per contract’} | $${parseFloat(v(‘dga’)||0).toLocaleString()}
+
+SUBTOTAL: $${parseFloat(v(‘dga’)||0).toLocaleString()}
+TOTAL DUE: $${parseFloat(v(‘dga’)||0).toLocaleString()}
+
+“Enter this order in accordance with the prices, terms, and specifications listed above.”
+
+PLEASE MAKE ALL CHECKS PAYABLE TO: RC Remodeling & Construction
+${payLink}
+
+SIGNATURE: ___________________________________  Date: ***/***/________
+
+Format this as a clean, professional invoice table. Include a clear header with company logo placeholder and all fields shown.`;
+
+} else {
+prompt=`Generate a professional Change Order document for RC Remodeling & Construction.
+
+RC REMODELING & CONSTRUCTION | CSLB #1109721 | (818) 633-1025
+
+TO: ${l.name}
+Project Address: ${l.addr}
+Customer Number: ${(l.addr.match(/\d+/)||[‘RC’])[0]}-CO
+
+DATE: ${dt}
+Produced By: Ron Cohen
+Change Order #: ${v(‘dgco’)||’___’}
+Terms: Due on Receipt
+
+STATUS | DESCRIPTION | AMOUNT
+DUE | All Equipment, Labor and Material included for scope below:
+${v(‘dgcd’)||‘Additional scope as discussed’}
+
+Note: Drainage, plumbing, electrical (unless stated above), any permits and city fees are NOT included in this change order unless explicitly stated.
+
+SUBTOTAL: $${parseFloat(v(‘dgca’)||0).toLocaleString()}
+TOTAL: $${parseFloat(v(‘dgca’)||0).toLocaleString()}
+
+“Enter this order in accordance with the prices, terms, and specifications listed above.”
+
+PLEASE MAKE ALL CHECKS PAYABLE TO: RC Remodeling & Construction
+
+SIGNATURE: ___________________________________  Date: ***/***/________`;
+}
+
+try{
+const res=await fetch(‘https://api.anthropic.com/v1/messages’,{
+method:‘POST’,
+headers:{‘Content-Type’:‘application/json’,‘x-api-key’:KEY,‘anthropic-version’:‘2023-06-01’,‘anthropic-dangerous-direct-browser-access’:‘true’},
+body:JSON.stringify({model:‘claude-sonnet-4-20250514’,max_tokens:3000,
+system:‘You are a professional construction document writer for RC Remodeling & Construction, a licensed ADU general contractor in Los Angeles (CSLB #1109721). Generate complete, formal, professional, legally appropriate construction documents exactly as instructed. Use formal contractor language. Format cleanly with clear sections and proper structure.’,
+messages:[{role:‘user’,content:prompt}]})
+});
+const data=await res.json();
+if(data.error)throw new Error(data.error.message);
+const text=data.content[0].text;
+g(‘dgtxt’).textContent=text;
+const doc={id:DB.nid++,type:type===‘proposal’?‘Proposal’:type===‘rfp’?‘RFP / Invoice’:‘Change Order’,
+clientName:l.name,leadId:lid,date:td(),
+desc:type===‘rfp’?v(‘dgd’).substring(0,55):`${v('dgsq')||''}sqft ${v('dgt')||''}`.trim(),
+content:text};
+DB.docs.push(doc);
+logAct(`📄 ${doc.type} generated for ${l.name}`,lid);
+saveAndSync();
+btn.textContent=‘✓ Generated’;g(‘dgebtn’).style.display=‘flex’;toast(‘Document ready ✓’);
+}catch(e){
+g(‘dgtxt’).textContent=‘Error: ‘+e.message+’\n\nCheck your API key and try again.’;
+btn.disabled=false;btn.textContent=‘🤖 Generate with AI’;
+}
+}
+
+function sendDocEmail(type){
+const lid=parseInt(v(‘dgl’));const l=DB.leads.find(x=>x.id===lid);
+if(!l){toast(‘Select a client’);return;}
+if(!l.email){toast(‘No email on file — edit this lead to add one’);return;}
+const text=g(‘dgtxt’).textContent;
+const subj=type===‘proposal’?`Your ADU Proposal — ${l.addr.split(',')[0]}`:
+type===‘rfp’?`Payment Request — RC Remodeling & Construction`:
+`Change Order — ${l.addr.split(',')[0]}`;
+const intro=type===‘proposal’?‘Please find your ADU proposal below for your review.’:
+type===‘rfp’?‘Please find your payment request below. As a reminder, payment is due within 48 hours per our contract.’:
+‘Please find the change order below for your approval and signature.’;
+const body=`Hi ${l.name.split(' ')[0]},\n\n${intro}\n\n${'─'.repeat(50)}\n\n${text.substring(0,4500)}\n\n${'─'.repeat(50)}\n\nPlease don't hesitate to reach out with any questions.\n\nBest,\nRon Cohen\nRC Remodeling & Construction\n(818) 633-1025 | RCremodelingconstruction.com | CSLB #1109721`;
+window.location.href=`mailto:${l.email}?subject=${encodeURIComponent(subj)}&body=${encodeURIComponent(body)}`;
+logAct(`${type==='proposal'?'Proposal':type==='rfp'?'Invoice':'Change Order'} emailed to ${l.name}`,lid);
+saveAndSync();toast(‘Opening email…’);
+}
+
+function renderDocs(){
+const el=g(‘docList’);if(!el)return;
+if(!DB.docs.length){el.innerHTML=’<div class="empty"><div class="empty-ico">📄</div><div class="empty-txt">No documents yet — generate one above</div></div>’;return;}
+el.innerHTML=[…DB.docs].sort((a,b)=>b.date.localeCompare(a.date)).map(d=>` <div class="row"> <div class="ri"><div class="rl">${d.type} — ${d.clientName}</div><div class="rsb">${d.date}${d.desc?' · '+d.desc:''}</div></div> <div class="rr"> <button class="btn bxs bs" onclick="viewDoc(${d.id})">View</button> <button class="btn bxs bp" onclick="emailDocById(${d.id})">Email</button> <button class="btn bxs bdr" onclick="delDoc(${d.id})">✕</button> </div> </div>`).join(’’);
+}
+
+function viewDoc(id){
+const d=DB.docs.find(x=>x.id===id);if(!d)return;
+openM(`<div class="moh"><span class="mot">${d.type} — ${d.clientName}</span><button class="mox" onclick="closeM()">✕</button></div> <div class="mbd"><div class="ao">${d.content}</div></div> <div class="mft"><button class="btn bs" onclick="closeM()">Close</button><button class="btn bs" onclick="printDoc(${d.id})">🖨️ Print / PDF</button><button class="btn bp" onclick="emailDocById(${d.id})">📧 Email to Client</button></div>`);
+}
+function emailDocById(id){
+const d=DB.docs.find(x=>x.id===id);const l=DB.leads.find(x=>x.id===d.leadId);
+if(!l){toast(‘Lead not found’);return;}
+if(!l.email){toast(‘No email on file for ‘+l.name+’ — edit lead to add one’);return;}
+const body=`Hi ${l.name.split(' ')[0]},\n\nPlease find your ${d.type} below.\n\n${'─'.repeat(50)}\n\n${d.content.substring(0,4500)}\n\n${'─'.repeat(50)}\n\nBest,\nRon Cohen\nRC Remodeling & Construction\n(818) 633-1025`;
+window.location.href=`mailto:${l.email||''}?subject=${encodeURIComponent(d.type+' — '+l.addr.split(',')[0])}&body=${encodeURIComponent(body)}`;
+}
+function delDoc(id){
+if(!confirm(‘Delete this document?’))return;
+DB.docs=DB.docs.filter(d=>d.id!==id);
+logAct(‘Document deleted’);saveAndSync();toast(‘Deleted’);
+}
+
+// ─── SETTINGS ─────────────────────────────────────────
+function openSettings(){
+openM(`<div class="moh"><span class="mot">⚙️ Settings</span><button class="mox" onclick="closeM()">✕</button></div> <div class="mbd"> <div class="slbl" style="margin-top:0">💳 Stripe Payment Link</div> <div style="font-size:.82rem;color:var(--mut);margin-bottom:.75rem;line-height:1.65"> Go to <strong>dashboard.stripe.com → Payment Links → Create</strong>. Set up a link for any amount (or let clients enter it). Paste the URL below — it will appear on all invoices and let clients pay online by card or bank transfer. </div> <div class="fg"><label>Stripe Payment Link URL</label><input class="fc" id="stripeUrl" value="${DB.settings.stripeLink||''}" placeholder="https://buy.stripe.com/..."></div> <div class="slbl" style="margin-top:1rem">🔑 Anthropic API Key</div> <div style="font-size:.82rem;color:var(--mut);margin-bottom:.75rem">Needed for AI document generation. Get yours at console.anthropic.com.</div> <div class="fg"><label>API Key</label><input class="fc" type="password" id="newKey" placeholder="Leave blank to keep current key" autocomplete="off"></div> <div class="slbl" style="margin-top:1rem">💾 Data Management</div> <button class="btn bs bsm" onclick="exportData()">📤 Export All Data (JSON)</button> <button class="btn bdr bsm" style="margin-left:.5rem" onclick="clearData()">🗑 Reset All Data</button> </div> <div class="mft"><button class="btn bs" onclick="closeM()">Cancel</button><button class="btn bp" onclick="saveSettings()">Save Settings</button></div>`);
+}
+function saveSettings(){
+DB.settings.stripeLink=v(‘stripeUrl’).trim();
+const nk=v(‘newKey’).trim();
+if(nk&&nk.startsWith(‘sk-ant-’)){KEY=nk;localStorage.setItem(‘rck’,nk);}
+logAct(‘Settings updated’);saveAndSync();closeM();toast(‘Settings saved ✓’);
+}
+function printDoc(id){
+const d=DB.docs.find(x=>x.id===id);if(!d)return;
+const w=window.open(’’,’_blank’);
+w.document.write(`<!DOCTYPE html><html><head><title>${d.type} — ${d.clientName}</title>
+
+  <style>body{font-family:Georgia,serif;max-width:750px;margin:40px auto;padding:20px;font-size:13px;line-height:1.7;color:#111}
+  h1{font-size:18px;margin-bottom:4px}pre{white-space:pre-wrap;font-family:inherit;font-size:13px}
+  @media print{body{margin:0;padding:15px}}</style></head>
+
+  <body><pre>${d.content.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</pre>
+  <script>setTimeout(function(){window.print();},400);<\/script></body></html>`);
+  w.document.close();
+}
+function toggleDark(){
+  document.body.classList.toggle('dark');
+  const isDark=document.body.classList.contains('dark');
+  localStorage.setItem('rcDark',isDark?'1':'0');
+  g('darkBtn').textContent=isDark?'☀️':'🌙';
+  toast(isDark?'Dark mode on':'Light mode on');
+}
+// Apply saved dark preference on load
+document.addEventListener('DOMContentLoaded',()=>{
+  if(localStorage.getItem('rcDark')==='1'){
+    document.body.classList.add('dark');
+    setTimeout(()=>{const b=g('darkBtn');if(b)b.textContent='☀️';},100);
+  }
+});
+function exportData(){
+  const blob=new Blob([JSON.stringify(DB,null,2)],{type:'application/json'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);
+  a.download='rc-crm-export-'+td()+'.json';a.click();toast('Data exported ✓');
+}
+function clearData(){
+  if(!confirm('⚠️ This will delete ALL leads, payments, expenses and documents. This cannot be undone. Are you sure?'))return;
+  localStorage.removeItem('rcdb');seed();saveAndSync();closeM();toast('Data reset');
+}
+
+// ─── SEARCH ───────────────────────────────────────────
+function toggleSearch(){
+const sb=g(‘sbar’),ov=g(‘sovl’),btn=g(‘sbtn’),fab=g(‘fabBtn’);
+if(sb.style.display===‘none’){
+sb.style.display=‘block’;g(‘si’).focus();btn.classList.add(‘on’);
+if(fab)fab.style.display=‘none’;
+} else {
+sb.style.display=‘none’;ov.style.display=‘none’;btn.classList.remove(‘on’);
+if(fab)fab.style.display=‘flex’;
+}
+}
+function doSearch(){
+const q=g(‘si’).value.toLowerCase().trim();const ov=g(‘sovl’);
+if(!q){ov.style.display=‘none’;return;}
+ov.style.display=‘block’;
+const res=DB.leads.filter(l=>l.name.toLowerCase().includes(q)||l.addr.toLowerCase().includes(q)||(l.email||’’).toLowerCase().includes(q)||(l.phone||’’).replace(/[^0-9]/g,’’).includes(q.replace(/[^0-9]/g,’’))||(l.phone||’’).includes(q));
+ov.innerHTML=`<div style="font-size:.73rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--mut);margin-bottom:.8rem">${res.length} result${res.length!==1?'s':''} — "${q}"</div>`+
+(res.length?res.map(l=>`<div class="llcard" onclick="toggleSearch();openLead(${l.id})"> <div class="llcard-inner"> <div style="flex:1"><div class="llcard-name">${l.name}</div><div class="llcard-addr">${l.addr}</div></div> <span class="bdg bdg-gray" style="font-size:.6rem">${SM[l.stage]?.lbl||l.stage}</span> </div> </div>`).join(’’):’<div class="empty"><div class="empty-txt">No matches found</div></div>’);
+}
+
+// ─── TABS ─────────────────────────────────────────────
+function sw(id){
+document.querySelectorAll(’.tab’).forEach(el=>{el.classList.remove(‘on’);el.style.display=‘none’;});
+document.querySelectorAll(’.ni’).forEach(el=>el.classList.remove(‘on’));
+const t=g(‘tab-’+id);
+t.style.display=‘block’;
+requestAnimationFrame(()=>requestAnimationFrame(()=>{t.classList.add(‘on’);}));
+g(‘nt-’+id).classList.add(‘on’);
+// Hide FAB on finance/docs tabs where it’s less relevant
+const fab=g(‘fabBtn’);
+if(fab)fab.style.display=[‘fin’,‘docs’,‘log’].includes(id)?‘none’:‘flex’;
+}
+
+// ─── MODAL ────────────────────────────────────────────
+function openM(html){g(‘mWrap’).innerHTML=`<div class="mo" onclick="mClick(event)"><div class="mob">${html}</div></div>`;}
+function closeM(){g(‘mWrap’).innerHTML=’’;}
+function mClick(e){if(e.target.classList.contains(‘mo’))closeM();}
+
+// ─── UTILITIES ────────────────────────────────────────
+function g(id){return document.getElementById(id);}
+function v(id){const el=g(id);return el?el.value:’’;}
+function td(){return new Date().toISOString().split(‘T’)[0];}
+function esc(s){return String(s).replace(/&/g,’&’).replace(/”/g,’"’).replace(/</g,’<’).replace(/>/g,’>’);}
+function fmt(n){if(!n&&n!==0)return’0’;if(n>=1000000)return(n/1000000).toFixed(2).replace(/.00$/,’’)+‘M’;if(n>=100000)return(n/1000).toFixed(0)+‘K’;return n.toLocaleString(‘en-US’,{minimumFractionDigits:0,maximumFractionDigits:0});}
+function toast(msg){const t=g(‘toast’);t.textContent=msg;t.classList.add(‘show’);setTimeout(()=>t.classList.remove(‘show’),2500);}
+function fmtDate(s){
+if(!s)return’’;
+const d=new Date(s+‘T12:00:00’);
+return d.toLocaleDateString(‘en-US’,{month:‘short’,day:‘numeric’,year:‘numeric’});
+}
+function fmtMoney(n){
+if(!n&&n!==0)return’$0.00’;
+return ‘$’+parseFloat(n).toLocaleString(‘en-US’,{minimumFractionDigits:2,maximumFractionDigits:2});
+}
+function timeAgo(iso){
+if(!iso)return’’;
+const diff=Date.now()-new Date(iso).getTime();
+const m=Math.floor(diff/60000),h=Math.floor(diff/3600000),d=Math.floor(diff/86400000);
+if(d>30)return new Date(iso).toLocaleDateString(‘en-US’,{month:‘short’,day:‘numeric’,year:‘numeric’});
+if(d>=1)return d+‘d ago’;if(h>=1)return h+‘h ago’;if(m>=1)return m+‘m ago’;return’Just now’;
+}
+</script>
+
+</body>
+</html>
