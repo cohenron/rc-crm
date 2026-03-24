@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="RC CRM">
-<title>RC Remodeling — CRM</title>
+<title>RC Remodeling - CRM</title>
 <link rel="manifest" href="data:application/json,{%22name%22:%22RC+Remodeling+CRM%22,%22short_name%22:%22RC+CRM%22,%22start_url%22:%22.%22,%22display%22:%22standalone%22,%22background_color%22:%22%23181818%22,%22theme_color%22:%22%23CC2200%22}">
 <meta name="theme-color" content="#CC2200">
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -35,18 +35,18 @@ a{color:inherit;text-decoration:none}
 img{max-width:100%}
 
 /* GATE */
-#gate{position:fixed;inset:0;background:linear-gradient(135deg,var(–dark) 0%,#2A0E00 100%);display:flex;align-items:center;justify-content:center;z-index:999;padding:1.5rem}
+#gate{position:fixed;inset:0;background:linear-gradient(135deg,#1C1C20 0%,#2A0E00 100%);display:flex;align-items:center;justify-content:center;z-index:999;padding:1.5rem}
 #gate.h{display:none}
-.gbox{background:#fff;border-radius:20px;padding:2.5rem;width:100%;max-width:400px;box-shadow:0 24px 80px rgba(0,0,0,.4);text-align:center}
+.gbox{background:#ffffff;border-radius:20px;padding:2.5rem;width:100%;max-width:400px;box-shadow:0 24px 80px rgba(0,0,0,.4);text-align:center}
 .glogo-wrap{display:flex;justify-content:center;margin-bottom:1.25rem}
 .glogo-img{width:80px;height:80px;object-fit:contain;display:block}
-.gtitle{font-size:1.4rem;font-weight:700;margin-bottom:.4rem;color:var(–ink)}
-.gdesc{font-size:.84rem;color:var(–mut);margin-bottom:1.5rem;line-height:1.65}
-.ginput{width:100%;border:1.5px solid var(–bd);border-radius:var(–r);padding:.85rem 1rem;font-size:.9rem;outline:none;transition:border-color .2s,box-shadow .2s;background:#fff;color:var(–ink)}
-.ginput:focus{border-color:var(–red);box-shadow:0 0 0 3px rgba(204,34,0,.08)}
-.gbtn{width:100%;margin-top:.85rem;background:var(–red);color:#fff;padding:.95rem;border-radius:var(–r);font-weight:700;font-size:.92rem;transition:all .15s;letter-spacing:.02em;cursor:pointer;border:none;display:block}
-.gbtn:hover{background:var(–rdk);transform:translateY(-1px);box-shadow:0 4px 12px rgba(204,34,0,.3)}
-.gnote{font-size:.69rem;color:var(–mut);margin-top:.7rem;text-align:center}
+.gtitle{font-size:1.4rem;font-weight:700;margin-bottom:.4rem;color:#1A1A1A}
+.gdesc{font-size:.84rem;color:#8A8A8A;margin-bottom:1.5rem;line-height:1.65}
+.ginput{width:100%;border:1.5px solid #E4E1DB;border-radius:10px;padding:.85rem 1rem;font-size:.9rem;outline:none;transition:border-color .2s,box-shadow .2s;background:#fff;color:#1A1A1A}
+.ginput:focus{border-color:#CC2200;box-shadow:0 0 0 3px rgba(204,34,0,.08)}
+.gbtn{width:100%;margin-top:.85rem;background:#CC2200;color:#fff;padding:.95rem;border-radius:10px;font-weight:700;font-size:.92rem;transition:all .15s;letter-spacing:.02em;cursor:pointer;border:none;display:block}
+.gbtn:hover{background:#A01A00;transform:translateY(-1px);box-shadow:0 4px 12px rgba(204,34,0,.3)}
+.gnote{font-size:.69rem;color:#8A8A8A;margin-top:.7rem;text-align:center}
 
 /* APP SHELL */
 #app{display:none;flex-direction:column;min-height:100vh}
@@ -312,7 +312,7 @@ textarea.fc{resize:vertical;min-height:72px}
     <div class="gtitle">Welcome back, Ron 👋</div>
     <div class="gdesc">Enter your Anthropic API key to enable AI-powered proposals, invoices, and document generation.</div>
     <input class="ginput" type="password" id="apiKey" placeholder="sk-ant-..." autocomplete="off" onkeydown="if(event.key==='Enter')boot()">
-    <button class="gbtn" onclick="boot()">Enter CRM →</button>
+    <button class="gbtn" onclick="boot()">Enter CRM &rarr;</button>
     <div class="gnote">Your key is stored only in this browser · Never sent to anyone except Anthropic</div>
   </div>
 </div>
