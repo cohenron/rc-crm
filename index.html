@@ -314,6 +314,7 @@ textarea.fc{resize:vertical;min-height:72px}
     <input class="ginput" type="password" id="apiKey" placeholder="sk-ant-..." autocomplete="off" onkeydown="if(event.key==='Enter')boot()">
     <button class="gbtn" onclick="boot()">Enter CRM &rarr;</button>
     <div class="gnote">Your key is stored only in this browser · Never sent to anyone except Anthropic</div>
+    <div id="gErr" style="display:none;margin-top:.75rem;background:#FFF0EE;border:1.5px solid #f5c0b0;border-radius:8px;padding:.65rem .85rem;font-size:.78rem;color:#CC2200;font-weight:500;text-align:left;word-break:break-all"></div>
   </div>
 </div>
 
@@ -474,7 +475,13 @@ let DB={leads:[],payments:[],expenses:[],docs:[],log:[],settings:{stripeLink:’
 // CORE
 function saveAndSync(){
 try{localStorage.setItem(‘rcdb’,JSON.stringify(DB));}catch(e){console.warn(‘Storage save failed:’,e.message);}
-renderDash();renderPipeline();renderLeads();renderDocs();renderFin();renderLog();updateDocBdg();
+try{renderDash();}catch(e){console.error(‘renderDash:’,e);}
+try{renderPipeline();}catch(e){console.error(‘renderPipeline:’,e);}
+try{renderLeads();}catch(e){console.error(‘renderLeads:’,e);}
+try{renderDocs();}catch(e){console.error(‘renderDocs:’,e);}
+try{renderFin();}catch(e){console.error(‘renderFin:’,e);}
+try{renderLog();}catch(e){console.error(‘renderLog:’,e);}
+try{updateDocBdg();}catch(e){console.error(‘updateDocBdg:’,e);}
 }
 function saveAll(){localStorage.setItem(‘rcdb’,JSON.stringify(DB));toast(‘Saved ✓’);}
 function logAct(msg,lid){
@@ -484,22 +491,38 @@ if(DB.log.length>300)DB.log=DB.log.slice(0,300);
 
 // BOOT
 function boot(){
-const k=g(‘apiKey’).value.trim();
-if(!k.startsWith(‘sk-ant-’)){toast(‘Enter a valid API key (starts with sk-ant-)’);return;}
-KEY=k;localStorage.setItem(‘rck’,k);
-g(‘gate’).classList.add(‘h’);g(‘app’).classList.add(‘v’);
-loadDB();saveAndSync();
+const errEl=g(‘gErr’);
+function showErr(msg){if(errEl){errEl.style.display=‘block’;errEl.textContent=msg;}}
+try{
+const raw=g(‘apiKey’).value||’’;
+const k=raw.trim().replace(/[\u200B-\u200D\uFEFF\u00A0]/g,’’);
+if(!k||k.length<10){showErr(‘Please enter your Anthropic API key (starts with sk-ant-)’);return;}
+if(!k.startsWith(‘sk-’)){showErr(‘Invalid key format. Got: ‘+k.slice(0,10)+’… Expected: sk-ant-…’);return;}
+KEY=k;
+if(errEl)errEl.style.display=‘none’;
+try{localStorage.setItem(‘rck’,k);}catch(e){}
+try{loadDB();}catch(e){console.error(‘loadDB:’,e);try{seed();}catch(e2){}}
+g(‘gate’).classList.add(‘h’);
+g(‘app’).classList.add(‘v’);
+try{saveAndSync();}catch(e){console.error(‘render:’,e);}
+}catch(e){
+showErr(’Error: ’+e.message);
+console.error(‘boot:’,e);
+}
 }
 
 document.addEventListener(‘DOMContentLoaded’,()=>{
-const k=localStorage.getItem(‘rck’);
-if(k&&k.startsWith(‘sk-ant-’)){
+try{
+const raw=localStorage.getItem(‘rck’)||’’;
+const k=raw.trim().replace(/[\u200B-\u200D\uFEFF\u00A0]/g,’’);
+if(k&&k.startsWith(‘sk-’)&&k.length>10){
 KEY=k;
+try{loadDB();}catch(e){try{seed();}catch(e2){}}
 g(‘gate’).classList.add(‘h’);
 g(‘app’).classList.add(‘v’);
-loadDB();
-saveAndSync();
+try{saveAndSync();}catch(e){console.error(‘render error:’,e);}
 }
+}catch(e){console.error(‘init error:’,e);}
 });
 
 function loadDB(){
@@ -1016,10 +1039,12 @@ saveAndSync();closeM();toast(‘Expense saved ✓’);
 function renderFin(){
 const sel=g(‘fProj’);
 if(sel){
+try{
 const cur=sel.value;
 sel.innerHTML=`<option value="">All Projects</option>`+
 DB.leads.filter(l=>![‘lost’].includes(l.stage)).map(l=>`<option value="${l.id}">${l.name}</option>`).join(’’);
 if(cur)sel.value=cur;
+}catch(e){console.error(‘fProj error:’,e);}
 }
 const allC=DB.leads.reduce((s,l)=>s+(l.value||0),0);
 const allPaid=DB.payments.filter(p=>p.status===‘paid’).reduce((s,p)=>s+p.amount,0);
@@ -1150,36 +1175,107 @@ const payLink=DB.settings.stripeLink?`\n\nONLINE PAYMENT LINK: ${DB.settings.str
 let prompt=’’;
 
 if(type===‘proposal’){
-prompt=`Generate a complete, professional ADU construction proposal for RC Remodeling & Construction.
+prompt=`Generate a complete, professional ADU construction proposal for RC Remodeling & Construction. Write every section in full – do not summarize or skip any content.
 
 COMPANY: RC Remodeling & Construction | CSLB #1109721 | (818) 633-1025 | RCremodelingconstruction.com
-DATE: ${dt} | “PLEASE MAKE ALL CHECKS PAYABLE TO: RC Remodeling & Construction”
+DATE: ${dt}
+“PLEASE MAKE ALL CHECKS PAYABLE TO: RC Remodeling & Construction”
 
-CLIENT: ${l.name} | ${l.addr} | ${l.phone||’***’} | ${l.email||’***’}
-PROJECT: ${v(‘dgt’)} ADU | ${v(‘dgsq’)} sqft | ${v(‘dgb’)} | Contract: $${parseFloat(v(‘dgv’)||0).toLocaleString()}
-NOTES: ${v(‘dgn’)||‘Standard full scope’}
+CLIENT: ${l.name}
+Address: ${l.addr}
+Phone: ${l.phone||’***’}
+Email: ${l.email||’***’}
 
-Include all standard RC sections: Description of Project, Pre-Construction Notes (a-f), Site Preparation, Scope of Work (sections I-R), Exclusions, Additional Notes, Project Schedule (75-95 Working Days), Payment Schedule (10-milestone RC standard), and Signature Blocks.
+PROJECT: ${v(‘dgt’)} ADU | ${v(‘dgsq’)} sqft | ${v(‘dgb’)} | Contract Value: $${parseFloat(v(‘dgv’)||0).toLocaleString()}
+SPECIAL NOTES: ${v(‘dgn’)||‘Standard full scope per RC standard specifications’}
 
-Payment Schedule format:
-RFP-001: $1,000 Deposit Upon Signing
-RFP-002: 15% Pre-Construction & Materials Deposit
-RFP-003: 12% Foundation & Site Preparation
-RFP-004: 12% Framing & Roofing
-RFP-005: 12% Rough MEP
-RFP-006: 10% Exterior, Insulation & Waterproofing
-RFP-007: 10% Drywall & Interior Prep
-RFP-008: 10% Finish Work – Flooring, Tile & Cabinetry
-RFP-009: 10% Final Fixtures, Electrical & Paint
-RFP-010: Remainder Final Completion
-Grand Total: $${parseFloat(v(‘dgv’)||0).toLocaleString()}
+Write ALL of the following sections completely:
 
-SIGNATURE BLOCKS:
-x___________________________________________ Date: ***/***/______
-“Owner” ___________________
+1. DESCRIPTION OF PROJECT
+   RC Remodeling & Construction Contractors Company, Fully Licensed Bonded and Insured (CSLB #1109721), contracted to supply all labor, supervision, and equipment for the property at [address] per work described herein.
+1. PRE-CONSTRUCTION GENERAL NOTES
+   a) Copies of CA Contractor License, Workers Compensation Insurance, General Liability Insurance, and OSHA certification will be provided upon request.
+   b) Construction starts after Owner obtains approved plans and permits. Owner is responsible for ALL city/county permit fees, plan check fees, and engineering fees.
+   c) Contractor will provide one complete signed copy of contract before commencing work.
+   d) All communication via email, phone, and weekly on-site meetings.
+   e) Contractor will provide Request for Payments, Conditional Lien Releases, and Receipts with each payment per schedule.
+   f) All work will be performed within approved city construction hours to minimize neighborhood disturbance.
 
-x___________________________________________  Date: ***/***/______
+**** Any significant change in construction material or labor cost index may incur additional charges ****
+**** Any changes in plans or on-site requests will incur additional costs. Price good for 7 days ****
+
+1. SITE PREPARATION
+
+- GC supplies portable toilets as needed during construction
+- Owner provides water and power access for construction use
+- Owner pays all permits, soils engineering, architectural/structural engineering, surveyor fees, and lab testing
+- Excluded: soil testing, tree removal, contaminated soil removal, excavation over 5ft requiring OSHA shoring
+- Owner to provide adequate site access for trucks and equipment
+
+1. SCOPE OF WORK – ${v(‘dgsq’)} SQFT ${v(‘dgt’)} ADU
+
+I. PRE-CONSTRUCTION (Plans and Permits)
+A. Plans: Design ${v(‘dgb’)} unit, complete Architectural and Structural plan set (WFPP), submit to city, address all corrections, obtain building permit
+
+II. CONSTRUCTION:
+A. Foundation – Excavate per approved plan, install rebar per structural, slab on grade, anchor bolts, wood forming, plastic vapor membrane, pour and finish concrete, remove all debris
+B. Framing – All hardware, stud walls, plates, posts, headers, ceiling joists, roof rafters, ridge beam, shear walls per plan, blocking, roof sheathing, remove all debris
+C. Roofing – Waterproofing underlayment, roof material to match or complement existing, 2x fascia board, ventilation per plans
+D. Windows and Doors – Waterproofing at all openings, windows at $350/unit, exterior doors at $300/unit, French doors at $400/unit, interior hinge doors at $150/unit, bi-fold doors at $100/unit, doorknobs at $25/unit
+E. Rough Electrical – New sub-panel fed from main panel, rough wiring throughout unit, accommodations for water heater, HVAC, lighting circuits, exhaust fans, and all required outlets per code
+F. Rough Plumbing – Break and repair concrete as needed, trenching, PEX water supply lines, ABS drainage system, gas line, bathroom rough, kitchen rough, laundry rough, tankless water heater rough-in
+G. HVAC – Ductless mini-split system at $1,850/unit: outdoor condenser, concrete condenser pad, indoor wall unit, all communications and condensation lines
+H. Exterior Facade – Scaffolding as needed, waterproof barrier, exterior lath, drip metal, 3-coat stucco system to match existing, cover all openings during work
+I. Insulation – R-15 batt insulation in all exterior walls, R-30 in ceiling/attic areas
+J. Drywall – 5/8” drywall throughout, 5/8” type X in wet areas and per fire code, firewall per plan, screws, tape, texture to match, sand smooth
+K. Cabinetry – Prefab kitchen cabinets at $300/LF (upper and lower), bathroom vanity with integrated sink bowl, countertop and backsplash at $350/unit
+L. Stone Countertop – Prefab quartz 108”x26” with 6” backsplash at $350/unit, cut all plumbing holes
+M. Base Trim – Base molding at $1.50/LF, door casing trim at $1.50/LF
+N. Flooring and Tile – Hot mop shower pan, cement board substrate prep, flooring material at $3.50/sqft, shower wall tile (120 sqft) at $3.50/sqft, shower pan tile at $3.50/sqft
+O. Paint – All interior walls, ceilings, and moldings; primer coat plus 2 finish coats in owner’s choice of color (max 3 colors), cover and protect all windows, doors, and floors
+P. Appliances – Install all rough-in accommodations during rough phases; owner supplies all appliances
+Q. Finish Plumbing – Kitchen sink at $150, kitchen faucet at $100, bathroom faucet and drains at $80/unit, toilet at $150/unit, shower valve and head at $100/unit, drain cover at $30/unit, tankless water heater at $1,200/unit, garbage disposal at $150/unit
+R. Finish Electrical – Smoke/CO detectors at $20/unit, switches at $5/unit, AFCI breakers at $5/unit, GFCI outlets at $10/unit, recessed LED lights at $20/unit, exterior lights at $30/unit, vanity lights at $50/unit, exhaust fans at $75/unit
+
+1. EXCLUSIONS
+   Existing electrical service upgrades, gas meter upgrades, water meter upgrades, meter separation, solar panels, low impact development fees, any work not explicitly listed in scope above.
+1. ADDITIONAL NOTES
+
+- “Per Plans” means per the approved architectural and structural plan set
+- All extras and changes subject to 25% profit/overhead markup plus 5% contingency
+- 40-hour / 5-day work week standard; overtime only by mutual written agreement
+- Bank or bridge funding draws subject to lender inspection schedule
+- Photos may be used for marketing with address and owner information protected
+- All allowances defined per unit or linear foot as stated; actual quantities billed per plans
+- Disputes: mediation first, then mandatory binding arbitration per California law
+
+1. PROJECT SCHEDULE
+   Estimated Duration: 75 to 95 Working Days from permit issuance and contract execution
+1. PAYMENT SCHEDULE (Collect BEFORE each phase begins)
+   RFP-001: $1,000.00 – Deposit Upon Signing (flat fee, due immediately upon contract execution)
+   RFP-002: 15% = $${Math.round(parseFloat(v(‘dgv’)||0)*0.15).toLocaleString()} – Pre-Construction & Materials Deposit (due before design begins)
+   RFP-003: 12% = $${Math.round(parseFloat(v(‘dgv’)||0)*0.12).toLocaleString()} – Foundation & Site Preparation (due before foundation starts)
+   RFP-004: 12% = $${Math.round(parseFloat(v(‘dgv’)||0)*0.12).toLocaleString()} – Framing & Roofing (due before framing crew mobilizes)
+   RFP-005: 12% = $${Math.round(parseFloat(v(‘dgv’)||0)*0.12).toLocaleString()} – Rough MEP: Electrical, Plumbing & HVAC (due before rough-in begins)
+   RFP-006: 10% = $${Math.round(parseFloat(v(‘dgv’)||0)*0.10).toLocaleString()} – Exterior, Insulation & Waterproofing (due before exterior work)
+   RFP-007: 10% = $${Math.round(parseFloat(v(‘dgv’)||0)*0.10).toLocaleString()} – Drywall & Interior Prep (due after rough inspections pass)
+   RFP-008: 10% = $${Math.round(parseFloat(v(‘dgv’)||0)*0.10).toLocaleString()} – Finish Work: Flooring, Tile & Cabinetry (due before finish phase)
+   RFP-009: 10% = $${Math.round(parseFloat(v(‘dgv’)||0)*0.10).toLocaleString()} – Final Fixtures, Electrical & Paint (due before final phase)
+   RFP-010: Remainder – Final Completion: Inspection & Walkthrough (due after final inspection passed and client walkthrough complete)
+
+GRAND TOTAL: $${parseFloat(v(‘dgv’)||0).toLocaleString()}
+
+Each payment milestone is due 48 hours before the corresponding phase begins. Owner must remit payment to unlock each phase of work.
+
+1. SIGNATURES
+
+x___________________________________________ Date: ***/***/________
+“Owner / Authorized Representative”
+Print Name: _______________________________
+
+x___________________________________________ Date: ***/***/________
 “General Contractor” RC Remodeling & Construction
+Print Name: Ron Cohen
 
 PLEASE MAKE ALL CHECKS PAYABLE TO: RC Remodeling & Construction`; } else if(type==='rfp'){ prompt=`Generate a professional Request for Payment (Invoice) for RC Remodeling & Construction.
 
